@@ -28,12 +28,6 @@
   --transition-slow: all 0.5s ease;
 }
 
-html {
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
-  height: 100%;
-}
-
 body {
   font-family: 'Poppins', sans-serif;
   line-height: 1.6;
@@ -41,19 +35,12 @@ body {
   background-color: var(--light);
   overflow-x: hidden;
   position: relative;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  -webkit-text-size-adjust: 100%;
-  min-height: 100%;
-  overflow-y: auto !important;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Montserrat', sans-serif;
   font-weight: 700;
   line-height: 1.2;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
 }
 
 /* ===== 品牌启动页面 ===== */
@@ -69,7 +56,6 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   z-index: 9999;
   transition: opacity 0.8s ease, visibility 0.8s ease;
-  overflow: hidden;
 }
 
 .brand-loader.fade-out {
@@ -135,8 +121,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
   text-align: center;
   order: 2;
-  word-break: keep-all;
-  white-space: nowrap;
 }
 
 .brand-highlight {
@@ -151,8 +135,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   text-align: center;
   order: 3;
-  word-break: keep-all;
-  white-space: nowrap;
 }
 
 /* ===== PARTICLE EFFECTS ===== */
@@ -178,8 +160,6 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.8s ease, transform 0.8s ease;
-  min-height: 100vh;
-  overflow-y: auto;
 }
 
 .main-content.loaded {
@@ -197,8 +177,6 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
   margin-bottom: 5px;
   color: var(--dark);
-  word-break: keep-all;
-  overflow-wrap: break-word;
 }
 
 .hero-title-2 {
@@ -208,8 +186,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary);
   position: relative;
   display: inline-block;
-  word-break: keep-all;
-  overflow-wrap: break-word;
 }
 
 .hero-title-2::after {
@@ -229,8 +205,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary);
   margin-bottom: 25px;
   font-weight: 600;
-  word-break: keep-all;
-  overflow-wrap: break-word;
 }
 
 /* 总结部分标题优化 */
@@ -243,8 +217,6 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
   margin-bottom: 5px;
   color: var(--dark);
-  word-break: keep-all;
-  overflow-wrap: break-word;
 }
 
 .conclusion-title-2 {
@@ -254,8 +226,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--primary);
   position: relative;
   display: inline-block;
-  word-break: keep-all;
-  overflow-wrap: break-word;
 }
 
 .conclusion-title-2::after {
@@ -279,21 +249,7 @@ h1, h2, h3, h4, h5, h6 {
 .section-header h2 {
   font-size: clamp(32px, 5vw, 48px);
   margin-bottom: 15px;
-  white-space: normal;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  text-align: center;
-}
-
-.section-subtitle {
-  font-size: 18px;
-  color: var(--gray);
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  text-align: center;
+  white-space: nowrap;
 }
 
 /* 修复响应式设计 */
@@ -301,33 +257,20 @@ h1, h2, h3, h4, h5, h6 {
   .hero-title,
   .hero-title-2 {
     font-size: 32px;
-    white-space: normal;
-    line-height: 1.3;
   }
   
   .conclusion-title,
   .conclusion-title-2 {
     font-size: 28px;
-    white-space: normal;
-    line-height: 1.3;
   }
   
   .section-header h2 {
     white-space: normal;
     font-size: 28px;
-    line-height: 1.3;
   }
   
   .hero-subtitle {
     font-size: 18px;
-    white-space: normal;
-    line-height: 1.4;
-  }
-  
-  .section-subtitle {
-    font-size: 16px;
-    line-height: 1.5;
-    white-space: normal;
   }
   
   .brand-logo-img {
@@ -337,15 +280,11 @@ h1, h2, h3, h4, h5, h6 {
   
   .brand-title {
     font-size: 48px;
-    white-space: normal;
-    word-break: keep-all;
   }
   
   .brand-subtitle {
     font-size: 16px;
     letter-spacing: 3px;
-    white-space: normal;
-    word-break: keep-all;
   }
   
   .brand-container {
@@ -379,7 +318,6 @@ img {
 section {
   padding: 80px 0;
   position: relative;
-  overflow: visible;
 }
 
 @media (max-width: 768px) {
@@ -504,7 +442,7 @@ section {
   background: linear-gradient(135deg, #F8F9FF 0%, #E6E9FF 100%);
   padding-top: 30px;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .header {
@@ -514,15 +452,6 @@ section {
   margin-bottom: 60px;
   position: relative;
   z-index: 10;
-}
-
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-    margin-bottom: 40px;
-  }
 }
 
 .logo-container {
@@ -572,7 +501,6 @@ section {
   color: var(--dark);
   margin-bottom: 3px;
   letter-spacing: 1px;
-  word-break: keep-all;
 }
 
 .tagline {
@@ -581,7 +509,6 @@ section {
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
-  word-break: keep-all;
 }
 
 .contact-info {
@@ -593,14 +520,6 @@ section {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
-@media (max-width: 768px) {
-  .contact-info {
-    text-align: left;
-    width: 100%;
-    padding: 15px;
-  }
-}
-
 .contact-info p {
   margin-bottom: 6px;
   font-size: 13px;
@@ -609,17 +528,6 @@ section {
   align-items: center;
   justify-content: flex-end;
   gap: 6px;
-  word-break: keep-all;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .contact-info p {
-    justify-content: flex-start;
-    white-space: normal;
-    font-size: 14px;
-    line-height: 1.5;
-  }
 }
 
 .contact-info i {
@@ -637,17 +545,6 @@ section {
   padding-right: 40px;
 }
 
-@media (max-width: 768px) {
-  .hero-text {
-    padding-right: 0;
-    margin-bottom: 40px;
-  }
-  
-  .hero-content {
-    flex-direction: column;
-  }
-}
-
 .badge {
   display: inline-block;
   background: linear-gradient(135deg, var(--secondary), #FF8E9E);
@@ -659,21 +556,6 @@ section {
   margin-bottom: 20px;
   position: relative;
   transform-style: preserve-3d;
-  word-break: keep-all;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .badge {
-    padding: 8px 16px;
-    font-size: 13px;
-    white-space: normal;
-    text-align: center;
-    display: block;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
-  }
 }
 
 .badge-3d {
@@ -712,16 +594,6 @@ section {
   display: flex;
   align-items: center;
   gap: 10px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .hero-desc p {
-    font-size: 15px;
-    line-height: 1.6;
-    white-space: normal;
-  }
 }
 
 .hero-desc i {
@@ -737,17 +609,6 @@ section {
   font-size: 18px;
   padding: 18px 35px;
   border-radius: 18px;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .hero-btn {
-    font-size: 16px;
-    padding: 16px 30px;
-    width: 100%;
-    justify-content: center;
-    white-space: normal;
-  }
 }
 
 .cta-note {
@@ -757,19 +618,6 @@ section {
   display: flex;
   align-items: center;
   gap: 8px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .cta-note {
-    font-size: 13px;
-    line-height: 1.5;
-    white-space: normal;
-    text-align: center;
-    flex-direction: column;
-    gap: 5px;
-  }
 }
 
 .cta-note i {
@@ -787,14 +635,6 @@ section {
   border-radius: 15px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(108, 99, 255, 0.1);
-}
-
-@media (max-width: 768px) {
-  .features-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 15px;
-  }
 }
 
 .feature-item {
@@ -820,24 +660,12 @@ section {
   font-size: 14px;
   margin-bottom: 3px;
   color: var(--dark);
-  word-break: keep-all;
 }
 
 .feature-content p {
   font-size: 12px;
   color: var(--gray);
   line-height: 1.4;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .feature-content h4 {
-    font-size: 15px;
-  }
-  
-  .feature-content p {
-    font-size: 13px;
-  }
 }
 
 .hero-image {
@@ -985,18 +813,6 @@ section {
   z-index: 1;
   transform-style: preserve-3d;
   transform: perspective(500px) translateZ(0);
-  word-break: keep-all;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .btn {
-    padding: 14px 24px;
-    font-size: 15px;
-    white-space: normal;
-    text-align: center;
-    line-height: 1.3;
-  }
 }
 
 .btn-3d {
@@ -1053,7 +869,7 @@ section {
   transform: perspective(1000px) translateZ(0);
   transition: var(--transition);
   border-radius: 20px;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .card-3d::before {
@@ -1172,7 +988,6 @@ section {
 .empathy {
   background-color: white;
   position: relative;
-  overflow: visible;
 }
 
 .empathy::before {
@@ -1195,34 +1010,30 @@ section {
   z-index: 1;
 }
 
-@media (max-width: 768px) {
-  .section-header {
-    margin-bottom: 40px;
-  }
+.section-subtitle {
+  font-size: 18px;
+  color: var(--gray);
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 .concerns {
   gap: 30px;
 }
 
-@media (max-width: 768px) {
-  .concerns {
-    gap: 20px;
-  }
-}
-
 /* ===== 优化共鸣部分图片显示 ===== */
 .concern-item {
   text-align: center;
-  padding: 0 0 40px;
+  padding: 0 0 40px; /* 修改padding，因为图片需要占用顶部空间 */
   border-radius: 25px;
   background-color: var(--light);
   transition: var(--transition);
   position: relative;
   z-index: 1;
   transform-style: preserve-3d;
-  overflow: visible;
-  height: 100%;
+  overflow: hidden; /* 确保图片不溢出 */
+  height: 100%; /* 确保所有卡片高度一致 */
   display: flex;
   flex-direction: column;
 }
@@ -1242,28 +1053,23 @@ section {
 .concern-image-container {
   position: relative;
   width: 100%;
-  height: 380px;
+  height: 380px; /* 增加容器高度以显示更多图片 */
   overflow: hidden;
   border-radius: 25px 25px 0 0;
   margin-bottom: 25px;
-  background: linear-gradient(135deg, #F8F9FF, #E6E9FF);
-  flex-shrink: 0;
+  background: linear-gradient(135deg, #F8F9FF, #E6E9FF); /* 添加渐变背景 */
+  flex-shrink: 0; /* 防止图片容器收缩 */
 }
 
-@media (max-width: 768px) {
-  .concern-image-container {
-    height: 250px;
-  }
-}
-
+/* 优化图片显示 - 完整显示图片 */
 .concern-image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center;
+  object-fit: contain; /* 改为contain以完整显示图片 */
+  object-position: center; /* 图片居中显示 */
   transition: var(--transition-slow);
-  background-color: #f8f9ff;
-  padding: 15px;
+  background-color: #f8f9ff; /* 添加背景色填充空白区域 */
+  padding: 15px; /* 给图片添加内边距，避免紧贴边缘 */
 }
 
 .concern-image-overlay {
@@ -1275,21 +1081,22 @@ section {
   background: linear-gradient(to bottom, rgba(108, 99, 255, 0.05), rgba(108, 99, 255, 0.1));
   z-index: 2;
   transition: var(--transition);
-  pointer-events: none;
+  pointer-events: none; /* 确保覆盖层不影响点击 */
 }
 
 .concern-item:hover .concern-image {
-  transform: scale(1.03);
+  transform: scale(1.03); /* 轻微放大效果 */
 }
 
 .concern-item:hover .concern-image-overlay {
   background: linear-gradient(to bottom, rgba(108, 99, 255, 0.1), rgba(108, 99, 255, 0.15));
 }
 
+/* 调整图标位置，因为现在有图片了 */
 .concern-icon {
   position: relative;
   z-index: 3;
-  margin-top: -40px;
+  margin-top: -40px; /* 让图标部分覆盖在图片上 */
   margin-bottom: 15px;
   width: 80px;
   height: 80px;
@@ -1303,41 +1110,20 @@ section {
   font-size: 32px;
   transform: perspective(500px) translateZ(0);
   transition: var(--transition);
-  flex-shrink: 0;
-}
-
-@media (max-width: 768px) {
-  .concern-icon {
-    width: 65px;
-    height: 65px;
-    font-size: 26px;
-    margin-top: -30px;
-    margin-bottom: 10px;
-  }
+  flex-shrink: 0; /* 防止图标收缩 */
 }
 
 .concern-item:hover .concern-icon {
   transform: perspective(500px) translateZ(30px) rotateY(15deg);
 }
 
+/* 调整卡片内容位置 */
 .concern-item h3 {
   font-size: 22px;
   margin-bottom: 15px;
   color: var(--dark);
   padding: 0 20px;
-  flex-grow: 0;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-  .concern-item h3 {
-    font-size: 18px;
-    padding: 0 15px;
-    margin-bottom: 10px;
-    line-height: 1.3;
-  }
+  flex-grow: 0; /* 防止标题过度拉伸 */
 }
 
 .concern-item p {
@@ -1345,41 +1131,32 @@ section {
   line-height: 1.7;
   font-size: 15px;
   padding: 0 20px;
-  flex-grow: 1;
+  flex-grow: 1; /* 让描述文本填充剩余空间 */
   margin-bottom: 20px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
 }
 
-@media (max-width: 768px) {
-  .concern-item p {
-    font-size: 14px;
-    line-height: 1.5;
-    padding: 0 15px;
-  }
-}
-
+/* 为不同图片添加特定的object-position，确保重要内容可见 */
 .concern-item:nth-child(1) .concern-image {
-  object-position: center 20%;
+  object-position: center 20%; /* 第一张图片显示上半部分 */
 }
 
 .concern-item:nth-child(2) .concern-image {
-  object-position: center 40%;
+  object-position: center 40%; /* 第二张图片显示中间部分 */
 }
 
 .concern-item:nth-child(3) .concern-image {
-  object-position: center 60%;
+  object-position: center 60%; /* 第三张图片显示下半部分 */
 }
 
 .concern-item:nth-child(4) .concern-image {
-  object-position: center 30%;
+  object-position: center 30%; /* 第四张图片显示中上部分 */
 }
 
 /* ===== BENEFITS SECTION ===== */
 .benefits {
   background: linear-gradient(135deg, #F0F2FF 0%, #E6E9FF 100%);
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .benefits::before {
@@ -1400,12 +1177,6 @@ section {
   z-index: 1;
 }
 
-@media (max-width: 768px) {
-  .benefits-row {
-    gap: 20px;
-  }
-}
-
 .benefit-card {
   background-color: white;
   padding: 40px 25px;
@@ -1413,13 +1184,6 @@ section {
   text-align: center;
   transition: var(--transition);
   box-shadow: 0 10px 30px rgba(108, 99, 255, 0.1);
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .benefit-card {
-    padding: 30px 20px;
-  }
 }
 
 .benefit-icon {
@@ -1437,15 +1201,6 @@ section {
   transition: var(--transition);
 }
 
-@media (max-width: 768px) {
-  .benefit-icon {
-    width: 60px;
-    height: 60px;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-}
-
 .benefit-card:hover .benefit-icon {
   transform: perspective(500px) translateZ(30px) rotateX(15deg);
 }
@@ -1454,50 +1209,24 @@ section {
   font-size: 22px;
   margin-bottom: 15px;
   color: var(--dark);
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-  .benefit-card h3 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
 }
 
 .benefit-card p {
   color: var(--gray);
   line-height: 1.7;
   font-size: 15px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .benefit-card p {
-    font-size: 14px;
-    line-height: 1.5;
-  }
 }
 
 /* ===== PROGRAM SECTION ===== */
 .program {
   background-color: white;
   position: relative;
-  overflow: visible;
 }
 
 .timeline {
   max-width: 800px;
   margin: 0 auto 60px;
   position: relative;
-}
-
-@media (max-width: 768px) {
-  .timeline {
-    margin-bottom: 40px;
-  }
 }
 
 .timeline::before {
@@ -1512,23 +1241,11 @@ section {
   transform: perspective(1000px) rotateX(20deg);
 }
 
-@media (max-width: 768px) {
-  .timeline::before {
-    left: 25px;
-  }
-}
-
 .timeline-item {
   display: flex;
   margin-bottom: 40px;
   position: relative;
   align-items: flex-start;
-}
-
-@media (max-width: 768px) {
-  .timeline-item {
-    margin-bottom: 30px;
-  }
 }
 
 .timeline-day {
@@ -1553,31 +1270,12 @@ section {
   text-align: center;
   padding: 8px;
   line-height: 1.2;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .timeline-day {
-    width: 60px;
-    height: 60px;
-    font-size: 14px;
-    margin-right: 15px;
-    padding: 6px;
-  }
 }
 
 .day-text {
   display: block;
   word-break: keep-all;
   white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .day-text {
-    font-size: 13px;
-    white-space: normal;
-    line-height: 1.2;
-  }
 }
 
 .day-3d:hover {
@@ -1592,13 +1290,6 @@ section {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   transform: perspective(1000px) translateZ(0);
   transition: var(--transition);
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .timeline-content {
-    padding: 20px 15px;
-  }
 }
 
 .timeline-item:hover .timeline-content {
@@ -1609,31 +1300,12 @@ section {
   font-size: 20px;
   margin-bottom: 12px;
   color: var(--dark);
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-  .timeline-content h3 {
-    font-size: 17px;
-    margin-bottom: 8px;
-  }
 }
 
 .timeline-content p {
   color: var(--gray);
   line-height: 1.7;
   font-size: 15px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .timeline-content p {
-    font-size: 14px;
-    line-height: 1.5;
-  }
 }
 
 .outcome-box {
@@ -1646,14 +1318,6 @@ section {
   box-shadow: 
     var(--shadow-3d),
     0 0 50px rgba(108, 99, 255, 0.3);
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .outcome-box {
-    padding: 30px 20px;
-    border-radius: 20px;
-  }
 }
 
 .outcome-box h3 {
@@ -1664,28 +1328,10 @@ section {
   justify-content: center;
   gap: 15px;
   text-align: center;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-  .outcome-box h3 {
-    font-size: 20px;
-    margin-bottom: 30px;
-    flex-direction: column;
-    gap: 10px;
-  }
 }
 
 .outcome-list {
   gap: 25px;
-}
-
-@media (max-width: 768px) {
-  .outcome-list {
-    gap: 15px;
-  }
 }
 
 .outcome-item {
@@ -1697,13 +1343,6 @@ section {
   border: 1px solid rgba(255, 255, 255, 0.2);
   transform: perspective(500px) translateZ(0);
   transition: var(--transition);
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .outcome-item {
-    padding: 20px 15px;
-  }
 }
 
 .outcome-item:hover {
@@ -1724,51 +1363,23 @@ section {
   font-size: 26px;
 }
 
-@media (max-width: 768px) {
-  .outcome-icon {
-    width: 50px;
-    height: 50px;
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-}
-
 .outcome-item h4 {
   font-size: 18px;
   margin-bottom: 12px;
   color: white;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-  .outcome-item h4 {
-    font-size: 16px;
-    margin-bottom: 8px;
-  }
 }
 
 .outcome-item p {
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.6;
   font-size: 14px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .outcome-item p {
-    font-size: 13px;
-    line-height: 1.4;
-  }
 }
 
 /* ===== TESTIMONIALS SECTION ===== */
 .testimonials {
   background-color: var(--light);
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .testimonial-slider {
@@ -1785,13 +1396,6 @@ section {
   box-shadow: var(--shadow-3d);
 }
 
-@media (max-width: 768px) {
-  .slider-track {
-    margin-bottom: 25px;
-    border-radius: 20px;
-  }
-}
-
 .testimonial-card {
   min-width: 100%;
   background-color: white;
@@ -1799,26 +1403,12 @@ section {
   padding: 40px;
   transition: transform 0.5s ease;
   transform-style: preserve-3d;
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .testimonial-card {
-    padding: 25px 20px;
-    border-radius: 20px;
-  }
 }
 
 .testimonial-header {
   display: flex;
   align-items: center;
   margin-bottom: 25px;
-}
-
-@media (max-width: 768px) {
-  .testimonial-header {
-    margin-bottom: 15px;
-  }
 }
 
 .testimonial-avatar {
@@ -1832,15 +1422,6 @@ section {
   transition: var(--transition);
 }
 
-@media (max-width: 768px) {
-  .testimonial-avatar {
-    width: 50px;
-    height: 50px;
-    margin-right: 15px;
-    border-radius: 12px;
-  }
-}
-
 .testimonial-card:hover .testimonial-avatar {
   transform: perspective(500px) translateZ(20px) rotateY(10deg);
 }
@@ -1848,39 +1429,17 @@ section {
 .testimonial-info h4 {
   font-size: 20px;
   margin-bottom: 6px;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .testimonial-info h4 {
-    font-size: 17px;
-    margin-bottom: 4px;
-  }
 }
 
 .testimonial-info p {
   color: var(--gray);
   font-size: 15px;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .testimonial-info p {
-    font-size: 13px;
-  }
 }
 
 .stars {
   color: #FFC107;
   margin-top: 6px;
   font-size: 16px;
-}
-
-@media (max-width: 768px) {
-  .stars {
-    font-size: 14px;
-    margin-top: 4px;
-  }
 }
 
 .testimonial-text {
@@ -1891,31 +1450,12 @@ section {
   margin-bottom: 20px;
   padding-left: 18px;
   border-left: 4px solid var(--primary);
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .testimonial-text {
-    font-size: 15px;
-    line-height: 1.5;
-    padding-left: 12px;
-    margin-bottom: 15px;
-    border-left-width: 3px;
-  }
 }
 
 .testimonial-date {
   color: var(--gray);
   font-size: 14px;
   text-align: right;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .testimonial-date {
-    font-size: 12px;
-  }
 }
 
 .slider-controls {
@@ -1923,12 +1463,6 @@ section {
   align-items: center;
   justify-content: center;
   gap: 25px;
-}
-
-@media (max-width: 768px) {
-  .slider-controls {
-    gap: 15px;
-  }
 }
 
 .slider-btn {
@@ -1947,15 +1481,6 @@ section {
   transform: perspective(500px) translateZ(0);
 }
 
-@media (max-width: 768px) {
-  .slider-btn {
-    width: 45px;
-    height: 45px;
-    font-size: 16px;
-    border-radius: 12px;
-  }
-}
-
 .slider-btn:hover {
   background-color: var(--primary);
   color: white;
@@ -1968,12 +1493,6 @@ section {
   gap: 12px;
 }
 
-@media (max-width: 768px) {
-  .slider-dots {
-    gap: 8px;
-  }
-}
-
 .dot {
   width: 14px;
   height: 14px;
@@ -1982,13 +1501,6 @@ section {
   cursor: pointer;
   transition: var(--transition);
   transform: perspective(500px) translateZ(0);
-}
-
-@media (max-width: 768px) {
-  .dot {
-    width: 10px;
-    height: 10px;
-  }
 }
 
 .dot.active {
@@ -2005,7 +1517,7 @@ section {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .action::before {
@@ -2033,29 +1545,11 @@ section {
   box-shadow: 
     inset 0 1px 0 rgba(255, 255, 255, 0.2),
     0 25px 50px rgba(0, 0, 0, 0.2);
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .action-box {
-    padding: 30px 20px;
-    border-radius: 20px;
-  }
 }
 
 .action-header h2 {
   font-size: clamp(30px, 4vw, 45px);
   margin-bottom: 15px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-  .action-header h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
 }
 
 .action-subtitle {
@@ -2063,17 +1557,6 @@ section {
   margin-bottom: 50px;
   opacity: 0.9;
   font-weight: 500;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.4;
-}
-
-@media (max-width: 768px) {
-  .action-subtitle {
-    font-size: 16px;
-    margin-bottom: 30px;
-    line-height: 1.4;
-  }
 }
 
 .action-details {
@@ -2082,13 +1565,6 @@ section {
   gap: 40px;
   margin-bottom: 40px;
   flex-wrap: wrap;
-}
-
-@media (max-width: 768px) {
-  .action-details {
-    gap: 15px;
-    margin-bottom: 25px;
-  }
 }
 
 .detail-item {
@@ -2104,16 +1580,6 @@ section {
   border: 1px solid rgba(255, 255, 255, 0.1);
   transform: perspective(500px) translateZ(0);
   transition: var(--transition);
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .detail-item {
-    width: 100%;
-    min-width: auto;
-    padding: 15px;
-    gap: 12px;
-  }
 }
 
 .detail-item:hover {
@@ -2133,42 +1599,16 @@ section {
   color: white;
 }
 
-@media (max-width: 768px) {
-  .detail-icon {
-    width: 45px;
-    height: 45px;
-    font-size: 18px;
-    border-radius: 10px;
-  }
-}
-
 .detail-item h4 {
   font-size: 16px;
   margin-bottom: 6px;
   color: white;
   opacity: 0.9;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .detail-item h4 {
-    font-size: 15px;
-    margin-bottom: 4px;
-  }
 }
 
 .detail-item p {
   font-size: 15px;
   opacity: 0.9;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .detail-item p {
-    font-size: 14px;
-    line-height: 1.4;
-  }
 }
 
 .action-note {
@@ -2177,14 +1617,6 @@ section {
   border-radius: 18px;
   margin-bottom: 30px;
   text-align: left;
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .action-note {
-    padding: 15px;
-    margin-bottom: 20px;
-  }
 }
 
 .action-note p {
@@ -2193,29 +1625,11 @@ section {
   align-items: center;
   gap: 12px;
   font-size: 16px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.5;
-}
-
-@media (max-width: 768px) {
-  .action-note p {
-    font-size: 14px;
-    gap: 10px;
-    margin-bottom: 10px;
-    line-height: 1.4;
-  }
 }
 
 .action-note i {
   color: var(--accent);
   font-size: 18px;
-}
-
-@media (max-width: 768px) {
-  .action-note i {
-    font-size: 16px;
-  }
 }
 
 .action-btn {
@@ -2225,16 +1639,6 @@ section {
   padding: 22px 50px;
   border-radius: 22px;
   font-weight: 800;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .action-btn {
-    font-size: 16px;
-    padding: 18px 30px;
-    width: 100%;
-    white-space: normal;
-  }
 }
 
 .action-btn::before {
@@ -2249,7 +1653,6 @@ section {
 .faq {
   background-color: white;
   position: relative;
-  overflow: visible;
 }
 
 .faq-list {
@@ -2263,13 +1666,6 @@ section {
   transform-style: preserve-3d;
   transform: perspective(1000px) translateZ(0);
   transition: var(--transition);
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .faq-item {
-    padding: 20px 0;
-  }
 }
 
 .faq-item:hover {
@@ -2288,16 +1684,6 @@ section {
   font-size: 20px;
   color: var(--dark);
   flex: 1;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-  .faq-question h3 {
-    font-size: 17px;
-    line-height: 1.3;
-  }
 }
 
 .faq-question i {
@@ -2305,13 +1691,6 @@ section {
   font-size: 18px;
   transition: var(--transition);
   margin-left: 15px;
-}
-
-@media (max-width: 768px) {
-  .faq-question i {
-    font-size: 16px;
-    margin-left: 10px;
-  }
 }
 
 .faq-item.active .faq-question i {
@@ -2329,27 +1708,11 @@ section {
   padding-top: 20px;
 }
 
-@media (max-width: 768px) {
-  .faq-item.active .faq-answer {
-    padding-top: 15px;
-  }
-}
-
 .faq-answer p {
   color: var(--gray);
   line-height: 1.7;
   font-size: 16px;
   padding-right: 30px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .faq-answer p {
-    font-size: 15px;
-    line-height: 1.5;
-    padding-right: 0;
-  }
 }
 
 /* ===== CONCLUSION SECTION ===== */
@@ -2357,19 +1720,13 @@ section {
   background: linear-gradient(135deg, #F0F2FF 0%, #E6E9FF 100%);
   text-align: center;
   position: relative;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .conclusion-content {
   position: relative;
   z-index: 1;
   padding: 40px 20px;
-}
-
-@media (max-width: 768px) {
-  .conclusion-content {
-    padding: 30px 15px;
-  }
 }
 
 .conclusion-subtitle {
@@ -2380,17 +1737,6 @@ section {
   margin-left: auto;
   margin-right: auto;
   font-weight: 500;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.4;
-}
-
-@media (max-width: 768px) {
-  .conclusion-subtitle {
-    font-size: 16px;
-    margin-bottom: 30px;
-    line-height: 1.4;
-  }
 }
 
 .conclusion-btn {
@@ -2398,16 +1744,6 @@ section {
   padding: 22px 50px;
   border-radius: 22px;
   font-weight: 800;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .conclusion-btn {
-    font-size: 16px;
-    padding: 18px 30px;
-    width: 100%;
-    white-space: normal;
-  }
 }
 
 /* ===== FOOTER ===== */
@@ -2416,13 +1752,7 @@ section {
   color: white;
   padding: 60px 0 30px;
   position: relative;
-  overflow: visible;
-}
-
-@media (max-width: 768px) {
-  .footer {
-    padding: 40px 0 20px;
-  }
+  overflow: hidden;
 }
 
 .footer::before {
@@ -2442,26 +1772,11 @@ section {
   z-index: 1;
 }
 
-@media (max-width: 768px) {
-  .footer-content {
-    margin-bottom: 30px;
-  }
-}
-
 .footer-logo {
   display: flex;
   align-items: center;
   gap: 15px;
   margin-bottom: 25px;
-}
-
-@media (max-width: 768px) {
-  .footer-logo {
-    flex-direction: column;
-    text-align: center;
-    gap: 12px;
-    margin-bottom: 20px;
-  }
 }
 
 .footer-logo .logo-3d {
@@ -2472,20 +1787,12 @@ section {
 .footer-logo h3 {
   font-size: 24px;
   margin-bottom: 3px;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .footer-logo h3 {
-    font-size: 22px;
-  }
 }
 
 .footer-logo p {
   font-size: 12px;
   opacity: 0.8;
   letter-spacing: 2px;
-  word-break: keep-all;
 }
 
 .footer-address, .footer-contact, .footer-phone {
@@ -2495,15 +1802,6 @@ section {
   margin-bottom: 15px;
   opacity: 0.8;
   line-height: 1.6;
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .footer-address, .footer-contact, .footer-phone {
-    font-size: 14px;
-    line-height: 1.5;
-  }
 }
 
 .footer-address i, .footer-contact i, .footer-phone i {
@@ -2517,14 +1815,6 @@ section {
   margin-bottom: 25px;
   position: relative;
   padding-bottom: 12px;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .footer-cta h4 {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
 }
 
 .footer-cta h4::after {
@@ -2543,42 +1833,18 @@ section {
   margin-bottom: 20px;
   line-height: 1.6;
   font-size: 15px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .footer-cta p {
-    font-size: 14px;
-    line-height: 1.5;
-  }
 }
 
 .footer-btn {
   background: linear-gradient(135deg, var(--accent), var(--primary));
   margin-bottom: 15px;
   width: 100%;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .footer-btn {
-    white-space: normal;
-    padding: 14px 24px;
-  }
 }
 
 .footer-note {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
   text-align: center;
-  word-break: keep-all;
-}
-
-@media (max-width: 768px) {
-  .footer-note {
-    font-size: 13px;
-  }
 }
 
 .footer-bottom {
@@ -2591,17 +1857,8 @@ section {
   z-index: 1;
 }
 
-@media (max-width: 768px) {
-  .footer-bottom {
-    padding-top: 20px;
-    font-size: 12px;
-  }
-}
-
 .footer-bottom p {
   margin-bottom: 8px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
 }
 
 /* ===== MODAL & FORM STYLES ===== */
@@ -2620,8 +1877,6 @@ section {
   visibility: hidden;
   transition: var(--transition);
   backdrop-filter: blur(10px);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
 
 .modal-overlay.active {
@@ -2641,15 +1896,6 @@ section {
     0 0 80px rgba(108, 99, 255, 0.3);
   transform: perspective(1000px) rotateX(-5deg);
   transition: transform 0.5s ease;
-  margin: 20px auto;
-}
-
-@media (max-width: 768px) {
-  .modal-3d {
-    padding: 25px 20px;
-    width: 95%;
-    margin: 20px 10px;
-  }
 }
 
 .modal-overlay.active .modal-3d {
@@ -2660,12 +1906,6 @@ section {
   text-align: center;
   margin-bottom: 35px;
   position: relative;
-}
-
-@media (max-width: 768px) {
-  .modal-header {
-    margin-bottom: 25px;
-  }
 }
 
 .close-modal {
@@ -2688,16 +1928,6 @@ section {
   z-index: 10;
 }
 
-@media (max-width: 768px) {
-  .close-modal {
-    width: 35px;
-    height: 35px;
-    font-size: 20px;
-    top: -10px;
-    right: -10px;
-  }
-}
-
 .close-modal:hover {
   transform: rotate(90deg) scale(1.1);
 }
@@ -2706,40 +1936,17 @@ section {
   font-size: 28px;
   margin-bottom: 8px;
   color: var(--dark);
-  word-break: keep-all;
-  overflow-wrap: break-word;
-  line-height: 1.3;
-}
-
-@media (max-width: 768px) {
-  .modal-header h3 {
-    font-size: 22px;
-  }
 }
 
 .modal-subtitle {
   color: var(--primary);
   font-weight: 600;
   font-size: 16px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .modal-subtitle {
-    font-size: 14px;
-  }
 }
 
 .form-group {
   margin-bottom: 20px;
   position: relative;
-}
-
-@media (max-width: 768px) {
-  .form-group {
-    margin-bottom: 15px;
-  }
 }
 
 .input-icon {
@@ -2750,13 +1957,6 @@ section {
   color: var(--primary);
   font-size: 16px;
   z-index: 2;
-}
-
-@media (max-width: 768px) {
-  .input-icon {
-    left: 15px;
-    font-size: 14px;
-  }
 }
 
 .form-group input, .form-group select {
@@ -2773,13 +1973,6 @@ section {
   z-index: 1;
 }
 
-@media (max-width: 768px) {
-  .form-group input, .form-group select {
-    padding: 14px 15px 14px 42px;
-    font-size: 14px;
-  }
-}
-
 .form-group input:focus, .form-group select:focus {
   outline: none;
   border-color: var(--primary);
@@ -2794,13 +1987,6 @@ section {
   margin-top: 25px;
 }
 
-@media (max-width: 768px) {
-  .checkbox-group {
-    margin-top: 20px;
-    gap: 8px;
-  }
-}
-
 .checkbox-group input {
   width: auto;
   margin-top: 4px;
@@ -2810,15 +1996,6 @@ section {
   font-size: 13px;
   color: var(--gray);
   line-height: 1.5;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .checkbox-group label {
-    font-size: 12px;
-    line-height: 1.4;
-  }
 }
 
 .submit-btn {
@@ -2828,27 +2005,11 @@ section {
   padding: 18px;
   font-size: 16px;
   font-weight: 700;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .submit-btn {
-    margin-top: 20px;
-    padding: 16px;
-    font-size: 15px;
-    white-space: normal;
-  }
 }
 
 .submit-btn .fa-spinner {
   position: absolute;
   right: 18px;
-}
-
-@media (max-width: 768px) {
-  .submit-btn .fa-spinner {
-    right: 15px;
-  }
 }
 
 .hidden {
@@ -2864,17 +2025,6 @@ section {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  word-break: keep-all;
-  overflow-wrap: break-word;
-}
-
-@media (max-width: 768px) {
-  .form-note {
-    font-size: 12px;
-    margin-top: 15px;
-    flex-direction: column;
-    gap: 4px;
-  }
 }
 
 .form-note i {
@@ -2887,13 +2037,6 @@ section {
   bottom: 30px;
   right: 30px;
   z-index: 999;
-}
-
-@media (max-width: 768px) {
-  .floating-cta {
-    bottom: 20px;
-    right: 20px;
-  }
 }
 
 .pulse-3d {
@@ -2933,19 +2076,6 @@ section {
     0 20px 45px rgba(255, 101, 132, 0.3);
   transition: var(--transition);
   transform-style: preserve-3d;
-  word-break: keep-all;
-  white-space: nowrap;
-}
-
-@media (max-width: 768px) {
-  .cta-btn {
-    padding: 15px 20px;
-    font-size: 14px;
-  }
-  
-  .cta-btn span {
-    display: none;
-  }
 }
 
 .cta-btn:hover {
@@ -2964,6 +2094,27 @@ section {
 }
 
 @media (max-width: 992px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+    margin-bottom: 50px;
+  }
+  
+  .contact-info {
+    text-align: left;
+    width: 100%;
+  }
+  
+  .contact-info p {
+    justify-content: flex-start;
+  }
+  
+  .hero-text {
+    padding-right: 0;
+    margin-bottom: 50px;
+  }
+  
   .benefits-row .col,
   .concerns .col,
   .outcome-list .col {
@@ -2994,21 +2145,105 @@ section {
     grid-template-columns: repeat(2, 1fr);
   }
   
+  /* 响应式调整图片容器 */
   .concern-image-container {
-    height: 300px;
+    height: 300px; /* 在中等屏幕上减小高度 */
   }
 }
 
 @media (max-width: 768px) {
-  .benefits-row .col,
-  .concerns .col,
-  .outcome-list .col {
-    width: 100%;
+  section {
+    padding: 50px 0;
+  }
+  
+  .container {
+    padding: 0 20px;
+  }
+  
+  .hero-desc p {
+    font-size: 15px;
+  }
+  
+  .timeline-item {
+    flex-direction: row;
+    gap: 15px;
+  }
+  
+  .timeline-day {
+    width: 70px;
+    height: 70px;
+    font-size: 14px;
+    margin-right: 0;
+  }
+  
+  .day-text {
+    font-size: 13px;
+  }
+  
+  .outcome-box {
+    padding: 40px 25px;
+  }
+  
+  .outcome-box h3 {
+    font-size: 20px;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .action-box {
+    padding: 40px 25px;
+  }
+  
+  .modal-3d {
+    padding: 30px 20px;
+    width: 95%;
+  }
+  
+  .floating-cta {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .cta-btn span {
+    display: none;
+  }
+  
+  .cta-btn {
+    padding: 18px;
+  }
+  
+  .cta-btn i {
+    margin: 0;
+  }
+  
+  .faq-question h3 {
+    font-size: 18px;
+  }
+  
+  .faq-answer p {
+    padding-right: 0;
+  }
+  
+  .section-header h2 {
+    font-size: 24px;
+  }
+  
+  .section-subtitle {
+    font-size: 15px;
+  }
+  
+  .conclusion-subtitle {
+    font-size: 16px;
   }
   
   .features-grid {
     grid-template-columns: 1fr;
     gap: 15px;
+  }
+  
+  .conclusion-title,
+  .conclusion-title-2 {
+    font-size: 24px;
   }
   
   .floating-element {
@@ -3022,15 +2257,55 @@ section {
   .floating-3 { left: -15px; }
   .floating-4 { right: -15px; }
   
+  /* 响应式调整图片容器 */
   .concern-image-container {
-    height: 250px;
+    height: 250px; /* 在小平板上减小高度 */
+  }
+  
+  .concern-icon {
+    margin-top: -30px;
+    width: 65px;
+    height: 65px;
+    font-size: 28px;
   }
 }
 
 @media (max-width: 576px) {
+  .conclusion-content h2 {
+    font-size: 24px;
+  }
+  
+  .benefits-row .col,
+  .concerns .col,
+  .outcome-list .col {
+    width: 100%;
+  }
+  
+  .testimonial-card {
+    padding: 30px 20px;
+  }
+  
+  .testimonial-text {
+    font-size: 16px;
+  }
+  
   .hero-btn, .action-btn, .conclusion-btn {
     width: 100%;
     justify-content: center;
+  }
+  
+  .footer {
+    padding: 50px 0 25px;
+  }
+  
+  .footer-logo {
+    flex-direction: column;
+    text-align: center;
+    gap: 12px;
+  }
+  
+  .footer-logo .logo-3d {
+    margin: 0 auto;
   }
   
   .hero-title,
@@ -3038,16 +2313,27 @@ section {
     font-size: 28px;
   }
   
+  /* 响应式调整图片容器 */
   .concern-image-container {
-    height: 220px;
+    height: 220px; /* 在手机上进一步减小高度 */
   }
   
   .concern-image {
-    padding: 10px;
+    padding: 10px; /* 减小内边距 */
   }
 }
 
 @media (max-width: 480px) {
+  .timeline-day {
+    width: 60px;
+    height: 60px;
+    font-size: 12px;
+  }
+  
+  .day-text {
+    font-size: 11px;
+  }
+  
   .action-header h2 {
     font-size: 24px;
   }
@@ -3062,234 +2348,8 @@ section {
     width: 100%;
   }
   
+  /* 响应式调整图片容器 */
   .concern-image-container {
-    height: 200px;
+    height: 200px; /* 在小手机上减小高度 */
   }
-}
-
-/* 移动端特别优化 */
-@media (max-width: 767px) {
-  body {
-    font-size: 15px;
-    line-height: 1.5;
-    -webkit-text-size-adjust: 100%;
-    -moz-text-size-adjust: 100%;
-    -ms-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-    touch-action: pan-y pinch-zoom;
-    overflow-y: scroll !important;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  p, li, span, a, button {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    line-height: 1.5;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    line-height: 1.3;
-    margin-bottom: 15px;
-    word-break: break-word;
-    overflow-wrap: break-word;
-  }
-  
-  .container {
-    padding: 0 15px;
-  }
-  
-  .btn {
-    text-align: center;
-    line-height: 1.3;
-    padding: 12px 20px;
-    touch-action: manipulation;
-  }
-  
-  .card-3d h3,
-  .card-3d p {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    line-height: 1.4;
-  }
-  
-  .feature-item,
-  .outcome-item,
-  .benefit-card {
-    text-align: center;
-  }
-  
-  .feature-item h4,
-  .outcome-item h4,
-  .benefit-card h3 {
-    line-height: 1.3;
-    margin-bottom: 8px;
-    word-break: break-word;
-  }
-  
-  .feature-item p,
-  .outcome-item p,
-  .benefit-card p {
-    line-height: 1.4;
-    margin-bottom: 0;
-    word-break: break-word;
-  }
-  
-  /* 移除所有overflow: hidden */
-  section, .hero, .empathy, .benefits, .program, 
-  .testimonials, .action, .faq, .conclusion, .footer {
-    overflow: visible !important;
-  }
-}
-
-/* 特别小屏幕优化 */
-@media (max-width: 360px) {
-  body {
-    font-size: 14px;
-  }
-  
-  h1 { font-size: 26px; }
-  h2 { font-size: 22px; }
-  h3 { font-size: 18px; }
-  h4 { font-size: 16px; }
-  
-  .hero-title,
-  .hero-title-2 {
-    font-size: 24px;
-  }
-  
-  .conclusion-title,
-  .conclusion-title-2 {
-    font-size: 22px;
-  }
-  
-  .section-header h2 {
-    font-size: 22px;
-  }
-  
-  .btn {
-    font-size: 14px;
-    padding: 10px 16px;
-  }
-}
-
-/* ===== 成功页面移动端文字排列修复 ===== */
-@media (max-width: 768px) {
-  .success-message {
-    white-space: normal !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    line-height: 1.4 !important;
-    text-align: center !important;
-    padding: 0 10px !important;
-  }
-  
-  .success-title {
-    white-space: normal !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    line-height: 1.2 !important;
-    text-align: center !important;
-    padding: 0 10px !important;
-  }
-  
-  .step-content h3 {
-    white-space: normal !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    line-height: 1.3 !important;
-  }
-  
-  .step-content p {
-    white-space: normal !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    line-height: 1.5 !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .success-message {
-    font-size: 16px !important;
-    line-height: 1.4 !important;
-    padding: 0 5px !important;
-  }
-  
-  .success-title {
-    font-size: 24px !important;
-    line-height: 1.2 !important;
-  }
-}
-
-/* 修复移动端滑动问题的关键CSS */
-html, body {
-  -webkit-overflow-scrolling: touch;
-  overflow-scrolling: touch;
-  height: 100%;
-  min-height: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  position: relative;
-  overflow-y: auto !important;
-}
-
-/* 移除所有阻止滚动的overflow: hidden */
-.main-content,
-section,
-.hero,
-.empathy,
-.benefits,
-.program,
-.testimonials,
-.action,
-.faq,
-.conclusion,
-.footer {
-  overflow: visible !important;
-}
-
-/* 确保模态窗口可以滚动 */
-.modal-overlay {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* 触摸设备优化 */
-@media (hover: none) and (pointer: coarse) {
-  .btn, .cta-btn, .slider-btn, .close-modal {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
-  input, select, textarea {
-    font-size: 16px !important; /* 防止iOS缩放 */
-  }
-}
-
-/* 修复iOS Safari的100vh问题 */
-@supports (-webkit-touch-callout: none) {
-  body {
-    height: -webkit-fill-available;
-  }
-  
-  .success-page {
-    min-height: -webkit-fill-available;
-  }
-}
-
-/* 防止iOS橡皮筋效果 */
-body {
-  overscroll-behavior-y: none;
-}
-
-/* 修复Android Chrome滑动 */
-html {
-  scroll-behavior: smooth;
-}
-
-/* 确保所有可滚动区域都能滚动 */
-.scrollable {
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
 }
