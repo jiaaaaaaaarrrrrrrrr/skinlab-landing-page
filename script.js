@@ -1,4 +1,11 @@
-// SheetDB.io API 配置
+// 全局变量
+let currentSlide = 0;
+let autoSlideInterval;
+let modalTimeout;
+let isFormSubmitting = false;
+let particlesSystem;
+
+// SheetDB.io API 配置 - 修复数据字段
 const SHEETDB_API = 'https://sheetdb.io/api/v1/rm6iajzbhgnlv';
 
 // 测试数据 - 顾客评价
@@ -45,25 +52,300 @@ const testimonials = [
   }
 ];
 
-// 全局变量
-let currentSlide = 0;
-let autoSlideInterval;
-let modalTimeout;
-let isFormSubmitting = false;
+// 粒子系统
+class ParticlesSystem {
+  constructor(containerId = 'particlesContainer') {
+    this.container = document.getElementById(containerId);
+    this.particles = [];
+    this.particleCount = 50;
+    this.colors = [
+      'rgba(108, 99, 255, 0.7)',
+      'rgba(54, 209, 220, 0.7)',
+      'rgba(255, 101, 132, 0.7)',
+      'rgba(142, 68, 173, 0.5)',
+      'rgba(46, 204, 113, 0.5)'
+    ];
+    
+    if (this.container) {
+      this.init();
+    }
+  }
+
+  init() {
+    for (let i = 0; i < this.particleCount; i++) {
+      this.createParticle();
+    }
+    
+    this.animate();
+    window.addEventListener('resize', () => this.handleResize());
+  }
+
+  createParticle() {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    
+    const size = Math.random() * 10 + 5;
+    const x = Math.random() * window.innerWidth;
+    const y = Math.random() * window.innerHeight;
+    const color = this.colors[Math.floor(Math.random() * this.colors.length)];
+    
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+    particle.style.backgroundColor = color;
+    particle.style.opacity = Math.random() * 0.5 + 0.3;
+    
+    particle.speedX = (Math.random() - 0.5) * 0.5;
+    particle.speedY = (Math.random() - 0.5) * 0.5;
+    particle.rotation = Math.random() * 360;
+    particle.rotationSpeed = (Math.random() - 0.5) * 2;
+    
+    this.container.appendChild(particle);
+    this.particles.push(particle);
+  }
+
+  animate() {
+    const animateFrame = () => {
+      this.particles.forEach(particle => {
+        let x = parseFloat(particle.style.left);
+        let y = parseFloat(particle.style.top);
+        
+        x += particle.speedX;
+        y += particle.speedY;
+        
+        if (x > window.innerWidth) x = 0;
+        if (x < 0) x = window.innerWidth;
+        if (y > window.innerHeight) y = 0;
+        if (y < 0) y = window.innerHeight;
+        
+        particle.rotation += particle.rotationSpeed;
+        
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.transform = `rotate(${particle.rotation}deg)`;
+        
+        document.addEventListener('mousemove', (e) => {
+          const mouseX = e.clientX;
+          const mouseY = e.clientY;
+          const dx = x - mouseX;
+          const dy = y - mouseY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 100) {
+            particle.speedX += dx * 0.0001;
+            particle.speedY += dy * 0.0001;
+            particle.style.opacity = Math.min(parseFloat(particle.style.opacity) + 0.1, 0.8);
+          }
+        });
+      });
+      
+      requestAnimationFrame(animateFrame);
+    };
+    
+    animateFrame();
+  }
+
+  handleResize() {
+    this.particles.forEach(particle => {
+      if (parseFloat(particle.style.left) > window.innerWidth) {
+        particle.style.left = `${Math.random() * window.innerWidth}px`;
+      }
+      if (parseFloat(particle.style.top) > window.innerHeight) {
+        particle.style.top = `${Math.random() * window.innerHeight}px`;
+      }
+    });
+  }
+}
+
+// 数据处理器 - 修复Google Sheets字段
+class DataHandler {
+  constructor() {
+    this.isSubmitting = false;
+  }
+
+  // 格式化数据以匹配Google Sheets列名（正确的列名）
+  formatFormData(formData) {
+    const now = new Date();
+    const timestamp = this.getCurrentDateTime();
+    
+    return {
+      "时间戳": timestamp,
+      "预约ID": this.generateBookingId(),
+      "姓名": formData.name || '',
+      "手机号码": formData.phone || '',  // 修复：使用正确的列名
+      "邮箱": formData.email || '',
+      "皮肤问题": formData.concern || '',
+      "体验周次": formData.week || '',
+      "提交时间": timestamp,  // 新增提交时间字段
+      "客户电话": formData.phone || '',  // 新增客户电话字段
+      "名额": "已预约",
+      "来源": "Skin Lab Website",
+      "提交状态": "待确认",
+      "备注": "",
+      "跟进状态": "未跟进"
+    };
+  }
+
+  generateBookingId() {
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000);
+    return `SKIN-${timestamp}-${random}`;
+  }
+
+  getCurrentDateTime() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+  validateFormData(data) {
+    const errors = [];
+    
+    if (!data.姓名 || data.姓名.trim().length < 2) {
+      errors.push('姓名至少需要2个字符');
+    }
+    
+    if (!data.手机号码 || !/^[0-9+\-\s()]{10,}$/.test(data.手机号码)) {
+      errors.push('请输入有效的手机号码');
+    }
+    
+    if (!data.邮箱 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.邮箱)) {
+      errors.push('请输入有效的电子邮件地址');
+    }
+    
+    if (!data.皮肤问题) {
+      errors.push('请选择皮肤问题');
+    }
+    
+    if (!data.体验周次) {
+      errors.push('请选择体验周次');
+    }
+    
+    return errors;
+  }
+
+  async submitToGoogleSheets(formData) {
+    if (this.isSubmitting) {
+      throw new Error('正在提交中，请稍候...');
+    }
+    
+    this.isSubmitting = true;
+    
+    try {
+      const formattedData = this.formatFormData(formData);
+      const validationErrors = this.validateFormData(formattedData);
+      
+      if (validationErrors.length > 0) {
+        throw new Error(validationErrors.join(', '));
+      }
+      
+      console.log('提交数据到Google Sheets:', formattedData);
+      
+      const response = await fetch(SHEETDB_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: [formattedData]
+        })
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('SheetDB响应:', errorText);
+        throw new Error(`提交失败: ${response.status}`);
+      }
+      
+      const result = await response.json();
+      console.log('提交成功:', result);
+      
+      return {
+        success: true,
+        bookingId: formattedData.预约ID,
+        timestamp: formattedData.时间戳,
+        data: result
+      };
+      
+    } catch (error) {
+      console.error('DataHandler提交错误:', error);
+      throw error;
+      
+    } finally {
+      this.isSubmitting = false;
+    }
+  }
+}
 
 // DOM 加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
   console.log('页面加载完成，开始初始化...');
   
-  // 初始化组件
+  // 显示品牌启动页面
+  showBrandLoader();
+  
+  // 2秒后隐藏启动页面并初始化
+  setTimeout(() => {
+    hideBrandLoader();
+    initAllComponents();
+  }, 2000);
+});
+
+// 显示品牌启动页面
+function showBrandLoader() {
+  const brandLoader = document.getElementById('brandLoader');
+  if (brandLoader) {
+    brandLoader.style.display = 'flex';
+  }
+}
+
+// 隐藏品牌启动页面并显示主内容
+function hideBrandLoader() {
+  const brandLoader = document.getElementById('brandLoader');
+  const mainContent = document.getElementById('mainContent');
+  
+  if (brandLoader) {
+    brandLoader.classList.add('fade-out');
+  }
+  
+  setTimeout(() => {
+    if (brandLoader) {
+      brandLoader.style.display = 'none';
+    }
+    
+    if (mainContent) {
+      mainContent.classList.add('loaded');
+    }
+    
+    // 初始化粒子系统
+    particlesSystem = new ParticlesSystem();
+    
+    // 初始化滚动动画
+    initScrollAnimations();
+    
+    // 初始化光标效果
+    initCursorEffect();
+    
+    console.log('主内容加载完成！');
+  }, 800);
+}
+
+// 初始化所有组件
+function initAllComponents() {
   initTestimonials();
   initFAQ();
   initModal();
   initFormSubmission();
   initAutoPopup();
-  
-  // 平滑滚动
   initSmoothScroll();
+  initAnimations();
   
   // 为所有CTA按钮添加事件监听
   const ctaButtons = [
@@ -80,38 +362,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // 初始化动画效果
-  initAnimations();
-  
-  // 初始化快速链接
-  initQuickLinks();
-  
-  console.log('初始化完成！');
-});
-
-// 初始化快速链接
-function initQuickLinks() {
-  const quickLinks = document.querySelectorAll('.footer-link');
-  
-  quickLinks.forEach(link => {
-    link.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (targetId === '#') return;
-      
-      if (targetId.startsWith('#')) {
-        // 页面内锚点链接
-        e.preventDefault();
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop - 100,
-            behavior: 'smooth'
-          });
-        }
-      }
-      // 其他链接（如首页）将正常跳转
-    });
-  });
+  console.log('所有组件初始化完成！');
 }
 
 // 初始化顾客评价轮播
@@ -126,13 +377,10 @@ function initTestimonials() {
     return;
   }
   
-  console.log('初始化评价轮播，共', testimonials.length, '条评价');
-  
   // 生成评价卡片
   testimonials.forEach((testimonial, index) => {
-    // 创建卡片
     const card = document.createElement('div');
-    card.className = 'testimonial-card';
+    card.className = 'testimonial-card scroll-reveal';
     card.innerHTML = `
       <div class="testimonial-header">
         <img src="${testimonial.avatar}" alt="${testimonial.name}" class="testimonial-avatar" loading="lazy">
@@ -149,7 +397,6 @@ function initTestimonials() {
     `;
     sliderTrack.appendChild(card);
     
-    // 创建导航点
     const dot = document.createElement('div');
     dot.className = `dot ${index === 0 ? 'active' : ''}`;
     dot.dataset.index = index;
@@ -157,14 +404,11 @@ function initTestimonials() {
     sliderDots.appendChild(dot);
   });
   
-  // 按钮事件
   if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
   if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
   
-  // 开始自动轮播
   startAutoSlide();
   
-  // 鼠标悬停时暂停轮播
   sliderTrack.addEventListener('mouseenter', () => {
     clearInterval(autoSlideInterval);
   });
@@ -183,14 +427,11 @@ function goToSlide(index) {
   if (index >= totalSlides) index = 0;
   if (index < 0) index = totalSlides - 1;
   
-  // 更新当前幻灯片索引
   currentSlide = index;
   
-  // 移动幻灯片容器
   const sliderTrack = document.getElementById('sliderTrack');
   sliderTrack.style.transform = `translateX(-${index * 100}%)`;
   
-  // 更新导航点状态
   dots.forEach((dot, i) => {
     dot.classList.toggle('active', i === index);
   });
@@ -201,27 +442,23 @@ function startAutoSlide() {
   clearInterval(autoSlideInterval);
   autoSlideInterval = setInterval(() => {
     goToSlide(currentSlide + 1);
-  }, 5000); // 每5秒切换一次
+  }, 5000);
 }
 
 // 初始化FAQ展开/收起功能
 function initFAQ() {
   const faqItems = document.querySelectorAll('.faq-item');
   
-  console.log('初始化FAQ，共', faqItems.length, '个问题');
-  
   faqItems.forEach(item => {
     const question = item.querySelector('.faq-question');
     
     question.addEventListener('click', () => {
-      // 关闭其他展开的FAQ
       faqItems.forEach(otherItem => {
         if (otherItem !== item && otherItem.classList.contains('active')) {
           otherItem.classList.remove('active');
         }
       });
       
-      // 切换当前FAQ状态
       item.classList.toggle('active');
     });
   });
@@ -237,19 +474,14 @@ function initModal() {
     return;
   }
   
-  console.log('初始化模态窗口');
-  
-  // 点击关闭按钮
   closeModal.addEventListener('click', hideModal);
   
-  // 点击遮罩层关闭
   modalOverlay.addEventListener('click', (e) => {
     if (e.target === modalOverlay) {
       hideModal();
     }
   });
   
-  // ESC键关闭
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
       hideModal();
@@ -262,9 +494,8 @@ function showModal() {
   const modalOverlay = document.getElementById('modalOverlay');
   if (modalOverlay) {
     modalOverlay.classList.add('active');
-    document.body.style.overflow = 'hidden'; // 防止背景滚动
+    document.body.style.overflow = 'hidden';
     
-    // 添加动画类
     const modalContent = document.querySelector('.modal-content');
     if (modalContent) {
       modalContent.classList.add('animate__zoomIn');
@@ -279,19 +510,16 @@ function showModal() {
 function hideModal() {
   const modalOverlay = document.getElementById('modalOverlay');
   if (modalOverlay) {
-    // 添加消失动画
     const modalContent = document.querySelector('.modal-content');
     if (modalContent) {
       modalContent.classList.remove('animate__zoomIn');
       modalContent.classList.add('animate__zoomOut');
     }
     
-    // 延迟隐藏
     setTimeout(() => {
       modalOverlay.classList.remove('active');
-      document.body.style.overflow = 'auto'; // 恢复滚动
+      document.body.style.overflow = 'auto';
       
-      // 重置表单
       const form = document.getElementById('bookingForm');
       if (form) form.reset();
       
@@ -300,7 +528,7 @@ function hideModal() {
   }
 }
 
-// 初始化表单提交 - 修复SheetDB数据问题
+// 初始化表单提交
 function initFormSubmission() {
   const form = document.getElementById('bookingForm');
   
@@ -309,29 +537,21 @@ function initFormSubmission() {
     return;
   }
   
-  console.log('初始化表单提交');
-  
-  // 阻止表单的默认提交行为
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    // 防止重复提交
     if (isFormSubmitting) {
       console.log('表单正在提交中，请稍候...');
       return;
     }
     
-    // 验证表单
     if (!form.checkValidity()) {
-      // 触发浏览器原生验证提示
       form.reportValidity();
       return;
     }
     
-    // 设置提交状态
     isFormSubmitting = true;
     
-    // 显示加载状态
     const submitBtn = document.getElementById('submitForm');
     const spinner = submitBtn.querySelector('.fa-spinner');
     const submitText = submitBtn.querySelector('span');
@@ -343,112 +563,41 @@ function initFormSubmission() {
     }
     
     try {
-      console.log('开始提交表单数据到SheetDB...');
+      console.log('开始提交表单数据...');
       
-      // 获取当前时间并格式化
-      const now = new Date();
-      const formattedDate = formatDateTime(now);
-      
-      // 收集表单数据 - 使用正确的列名（与Google Sheets列名完全一致）
+      const dataHandler = new DataHandler();
       const formData = {
-        "时间戳": formattedDate, // 完整的时间戳
-        "预约ID": `SKIN-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-        "姓名": document.getElementById('name').value.trim(),
-        "电话": document.getElementById('phone').value.trim(),
-        "邮箱": document.getElementById('email').value.trim(),
-        "皮肤问题": document.getElementById('concern').value,
-        "体验周次": document.getElementById('week').value,
-        "名额": "已预约",
-        "来源": "Skin Lab Website"
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        concern: document.getElementById('concern').value,
+        week: document.getElementById('week').value
       };
       
       console.log('表单数据:', formData);
       
-      // 验证数据
-      if (!formData.姓名 || !formData.电话 || !formData.邮箱 || !formData.皮肤问题 || !formData.体验周次) {
-        throw new Error('请填写所有必填字段');
-      }
-      
-      // 验证邮箱格式
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(formData.邮箱)) {
-        throw new Error('请输入有效的电子邮件地址');
-      }
-      
-      // 验证手机号格式
-      const phoneRegex = /^[0-9+\-\s()]{10,}$/;
-      if (!phoneRegex.test(formData.电话)) {
-        throw new Error('请输入有效的手机号码');
-      }
-      
-      // 发送到 SheetDB - 使用正确的格式
-      console.log('发送请求到SheetDB API...');
-      
-      // SheetDB期望的格式是 { data: [{...}] }
-      const requestBody = {
-        data: [formData]
-      };
-      
-      console.log('请求体:', JSON.stringify(requestBody, null, 2));
-      
-      const response = await fetch(SHEETDB_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      });
-      
-      console.log('响应状态:', response.status);
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('API响应错误:', errorText);
-        
-        let errorMessage = '提交失败，请稍后重试';
-        
-        // 尝试解析错误信息
-        try {
-          const errorData = JSON.parse(errorText);
-          if (errorData.error) {
-            errorMessage = errorData.error;
-          }
-        } catch (e) {
-          // 如果无法解析JSON，检查常见错误
-          if (errorText.includes('limit')) {
-            errorMessage = '提交次数限制，请稍后再试';
-          }
-        }
-        
-        throw new Error(errorMessage);
-      }
-      
-      const result = await response.json();
+      const result = await dataHandler.submitToGoogleSheets(formData);
       console.log('提交成功:', result);
       
-      // 保存表单数据到sessionStorage，以便success.html使用
+      // 保存所有数据到sessionStorage，包括电话和提交时间
       sessionStorage.setItem('skinlab_booking_data', JSON.stringify({
-        name: formData.姓名,
-        phone: formData.电话,
-        email: formData.邮箱,
-        concern: formData.皮肤问题,
-        week: formData.体验周次,
-        timestamp: formData.时间戳,
-        bookingId: formData.预约ID
+        ...formData,
+        timestamp: result.timestamp,
+        bookingId: result.bookingId,
+        submitTime: result.timestamp,
+        customerPhone: formData.phone
       }));
       
-      // 保存提交状态到本地存储
+      // 保存到本地存储
       localStorage.setItem('skinlab_form_submitted', 'true');
       localStorage.setItem('skinlab_submission_time', new Date().toISOString());
-      localStorage.setItem('skinlab_customer_name', formData.姓名);
-      localStorage.setItem('skinlab_customer_phone', formData.电话);
-      localStorage.setItem('skinlab_booking_id', formData.预约ID);
+      localStorage.setItem('skinlab_customer_name', formData.name);
+      localStorage.setItem('skinlab_customer_phone', formData.phone);
+      localStorage.setItem('skinlab_customer_email', formData.email);
+      localStorage.setItem('skinlab_booking_id', result.bookingId);
       
-      // 隐藏模态窗口
       hideModal();
       
-      // 显示成功消息并跳转
       setTimeout(() => {
         window.location.href = 'success.html';
       }, 800);
@@ -456,42 +605,36 @@ function initFormSubmission() {
     } catch (error) {
       console.error('提交错误:', error);
       
-      // 显示友好的错误消息
       let errorMessage = error.message || '提交失败，请稍后重试';
       
-      // 如果是网络错误
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        errorMessage = '网络连接失败，请检查您的网络连接后重试';
+        errorMessage = '网络连接失败，已保存您的预约信息，稍后我们会联系您确认。';
         
-        // 如果网络失败，也保存数据并跳转（模拟成功）
-        console.log('网络错误，模拟提交成功并跳转...');
+        const dataHandler = new DataHandler();
+        const bookingId = `SKIN-OFFLINE-${Date.now()}`;
+        const timestamp = dataHandler.getCurrentDateTime();
         
-        // 获取当前时间
-        const now = new Date();
-        const formattedDate = formatDateTime(now);
-        
-        // 保存数据到sessionStorage
-        const formData = {
+        sessionStorage.setItem('skinlab_booking_data', JSON.stringify({
           name: document.getElementById('name').value.trim(),
           phone: document.getElementById('phone').value.trim(),
           email: document.getElementById('email').value.trim(),
           concern: document.getElementById('concern').value,
           week: document.getElementById('week').value,
-          timestamp: formattedDate,
-          bookingId: `SKIN-OFFLINE-${Date.now()}`
-        };
+          timestamp: timestamp,
+          bookingId: bookingId,
+          submitTime: timestamp,
+          customerPhone: document.getElementById('phone').value.trim()
+        }));
         
-        sessionStorage.setItem('skinlab_booking_data', JSON.stringify(formData));
         localStorage.setItem('skinlab_form_submitted', 'true');
         localStorage.setItem('skinlab_submission_time', new Date().toISOString());
-        localStorage.setItem('skinlab_customer_name', formData.name);
-        localStorage.setItem('skinlab_customer_phone', formData.phone);
-        localStorage.setItem('skinlab_booking_id', formData.bookingId);
+        localStorage.setItem('skinlab_customer_name', document.getElementById('name').value.trim());
+        localStorage.setItem('skinlab_customer_phone', document.getElementById('phone').value.trim());
+        localStorage.setItem('skinlab_customer_email', document.getElementById('email').value.trim());
+        localStorage.setItem('skinlab_booking_id', bookingId);
         
-        // 隐藏模态窗口
         hideModal();
         
-        // 跳转到成功页面
         setTimeout(() => {
           window.location.href = 'success.html';
         }, 500);
@@ -499,11 +642,9 @@ function initFormSubmission() {
         return;
       }
       
-      // 显示错误提示
       alert(`提交失败: ${errorMessage}\n\n如果问题持续存在，请直接联系：\n电话: +6016-9560425\n邮箱: jiayee344@gmail.com`);
       
     } finally {
-      // 恢复按钮状态
       const submitBtn = document.getElementById('submitForm');
       if (submitBtn) {
         const spinner = submitBtn.querySelector('.fa-spinner');
@@ -516,65 +657,45 @@ function initFormSubmission() {
         }
       }
       
-      // 重置提交状态
       isFormSubmitting = false;
     }
   });
 }
 
-// 格式化日期时间为字符串 (YYYY-MM-DD HH:MM:SS)
-function formatDateTime(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-  const seconds = String(date.getSeconds()).padStart(2, '0');
-  
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-
 // 初始化自动弹出表单（每20秒）
 function initAutoPopup() {
-  // 清除可能存在的旧计时器
   clearTimeout(modalTimeout);
   
-  // 检查用户是否已经提交过表单
   const hasSubmitted = localStorage.getItem('skinlab_form_submitted');
   const submissionTime = localStorage.getItem('skinlab_submission_time');
   
-  // 如果已经提交过，检查是否超过7天
   if (hasSubmitted && submissionTime) {
     const submissionDate = new Date(submissionTime);
     const now = new Date();
     const daysSinceSubmission = Math.floor((now - submissionDate) / (1000 * 60 * 60 * 24));
     
-    // 如果超过7天，清除本地存储，允许再次显示弹窗
     if (daysSinceSubmission > 7) {
       localStorage.removeItem('skinlab_form_submitted');
       localStorage.removeItem('skinlab_submission_time');
       localStorage.removeItem('skinlab_customer_name');
       localStorage.removeItem('skinlab_customer_phone');
+      localStorage.removeItem('skinlab_customer_email');
       localStorage.removeItem('skinlab_booking_id');
     }
   }
   
-  // 设置新的计时器
   modalTimeout = setTimeout(() => {
-    // 再次检查用户是否已经提交过表单
     const currentHasSubmitted = localStorage.getItem('skinlab_form_submitted');
     
-    // 如果没有提交过，显示模态窗口
     if (!currentHasSubmitted) {
       console.log('20秒后自动显示预约表单');
       showModal();
     }
-  }, 20000); // 20秒
+  }, 20000);
 }
 
 // 初始化平滑滚动
 function initSmoothScroll() {
-  // 为所有内部链接添加平滑滚动
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const targetId = this.getAttribute('href');
@@ -585,7 +706,7 @@ function initSmoothScroll() {
         e.preventDefault();
         
         window.scrollTo({
-          top: targetElement.offsetTop - 100,
+          top: targetElement.offsetTop - 80,
           behavior: 'smooth'
         });
       }
@@ -593,45 +714,74 @@ function initSmoothScroll() {
   });
 }
 
-// 初始化动画效果
-function initAnimations() {
-  // 添加滚动动画
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-  };
+// 初始化滚动动画
+function initScrollAnimations() {
+  const revealElements = document.querySelectorAll('.scroll-reveal');
   
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
-        
-        // 为3D卡片添加额外的动画类
-        if (entry.target.classList.contains('card-3d')) {
-          setTimeout(() => {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'perspective(1000px) translateZ(0)';
-          }, 300);
-        }
+        entry.target.classList.add('visible');
       }
     });
-  }, observerOptions);
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
   
-  // 观察需要动画的元素
-  document.querySelectorAll('.concern-item, .benefit-card, .timeline-item, .faq-item, .outcome-item').forEach(el => {
-    // 初始设置
-    if (el.classList.contains('card-3d')) {
-      el.style.opacity = '0';
-      el.style.transform = 'perspective(1000px) translateZ(-50px)';
-      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-    }
-    
+  revealElements.forEach(el => {
     observer.observe(el);
   });
 }
 
-// 页面可见性变化处理（防止标签页切换时计时器问题）
+// 初始化光标效果
+function initCursorEffect() {
+  const cursor = document.createElement('div');
+  cursor.className = 'cursor-effect';
+  document.body.appendChild(cursor);
+  
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = `${e.clientX}px`;
+    cursor.style.top = `${e.clientY}px`;
+  });
+  
+  document.addEventListener('mousedown', () => {
+    cursor.classList.add('active');
+  });
+  
+  document.addEventListener('mouseup', () => {
+    cursor.classList.remove('active');
+  });
+  
+  document.querySelectorAll('button, a, .btn').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '30px';
+      cursor.style.height = '30px';
+    });
+    
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '20px';
+      cursor.style.height = '20px';
+    });
+  });
+}
+
+// 初始化动画效果
+function initAnimations() {
+  const importantElements = document.querySelectorAll('.badge, .cta-btn, .hero-btn');
+  importantElements.forEach(el => {
+    el.classList.add('pulse-important');
+  });
+  
+  const heroTitle = document.querySelector('.hero-title-2');
+  if (heroTitle) {
+    setTimeout(() => {
+      heroTitle.classList.add('typewriter');
+    }, 500);
+  }
+}
+
+// 页面可见性变化处理
 document.addEventListener('visibilitychange', function() {
   if (document.hidden) {
     clearInterval(autoSlideInterval);
@@ -644,7 +794,6 @@ document.addEventListener('visibilitychange', function() {
 
 // 窗口大小变化时调整布局
 window.addEventListener('resize', function() {
-  // 重新计算轮播位置
   goToSlide(currentSlide);
 });
 
