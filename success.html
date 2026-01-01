@@ -91,19 +91,26 @@
     }
     
     .success-title {
-      font-size: 42px;
+      font-size: clamp(28px, 4vw, 42px);
       margin-bottom: 15px;
       color: #2D2B55;
       text-align: center;
       line-height: 1.2;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      padding: 0 10px;
     }
     
     .success-message {
-      font-size: 20px;
+      font-size: clamp(16px, 2vw, 20px);
       color: #6C63FF;
       margin-bottom: 50px;
       text-align: center;
       font-weight: 600;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      line-height: 1.4;
+      padding: 0 10px;
     }
     
     .success-details {
@@ -112,10 +119,13 @@
     }
     
     .success-details h2 {
-      font-size: 32px;
+      font-size: clamp(24px, 3vw, 32px);
       margin-bottom: 40px;
       color: #2D2B55;
       text-align: center;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      line-height: 1.3;
     }
     
     .steps {
@@ -157,15 +167,20 @@
     }
     
     .step-content h3 {
-      font-size: 24px;
+      font-size: clamp(18px, 2vw, 24px);
       margin-bottom: 12px;
       color: #2D2B55;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      line-height: 1.3;
     }
     
     .step-content p {
       color: #666;
       line-height: 1.6;
-      font-size: 16px;
+      font-size: clamp(14px, 1.5vw, 16px);
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     
     .location-info {
@@ -177,12 +192,14 @@
     }
     
     .location-info h3 {
-      font-size: 26px;
+      font-size: clamp(20px, 2.5vw, 26px);
       margin-bottom: 20px;
       color: #2D2B55;
       display: flex;
       align-items: center;
       gap: 12px;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     
     .location-info h3 i {
@@ -192,7 +209,7 @@
     .location-address {
       color: #666;
       line-height: 1.6;
-      font-size: 16px;
+      font-size: clamp(14px, 1.5vw, 16px);
       margin-bottom: 25px;
       display: flex;
       align-items: flex-start;
@@ -201,6 +218,8 @@
       background: white;
       border-radius: 14px;
       border-left: 5px solid #6C63FF;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     
     .location-address i {
@@ -238,18 +257,22 @@
     
     .map-placeholder > p {
       color: #666;
-      font-size: 16px;
+      font-size: clamp(14px, 1.5vw, 16px);
       margin-bottom: 8px;
       font-weight: 600;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     
     .map-note {
       color: #36D1DC !important;
-      font-size: 14px !important;
+      font-size: clamp(12px, 1.2vw, 14px) !important;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
+      word-break: keep-all;
+      overflow-wrap: break-word;
     }
     
     .success-cta {
@@ -708,16 +731,78 @@
   </section>
   
   <script>
-    // 打开Google地图
+    // 打开Google地图（直接跳转到指定链接）
     function openGoogleMaps() {
-      const address = "Suite 05-26, Level 5, Indah Walk, 3, Jalan Indah 15, Taman Bukit Indah, 81200 Johor Bahru, Johor Darul Ta'zim";
-      const encodedAddress = encodeURIComponent(address);
-      window.open(`https://www.google.com/maps/search/?api=1&query=${encodedAddress}`, '_blank');
+      const googleMapsUrl = "https://maps.app.goo.gl/wi2HBpoNo8dkpF8A9";
+      window.open(googleMapsUrl, '_blank');
     }
     
-    // 添加到日历功能
+    // 添加到日历功能（增强版）
     function addToCalendar() {
-      alert('日历事件已创建！\n\n您可以在手机的日历应用中查看和编辑预约时间。\n\n实际时间以我们的确认为准。');
+      // 从页面获取预约信息
+      const customerName = document.getElementById('customerName').textContent || '皮肤体验客户';
+      const bookingId = document.getElementById('bookingId').textContent;
+      const customerWeek = document.getElementById('customerWeek').textContent;
+      
+      // 解析体验周次
+      let startDate, endDate;
+      const weekMatch = customerWeek.match(/\((\d{2}-\d{2}-\d{4})\s至\s(\d{2}-\d{2}-\d{4})\)/);
+      
+      if (weekMatch && weekMatch.length === 3) {
+        startDate = weekMatch[1];
+        endDate = weekMatch[2];
+      } else {
+        // 默认日期（第1周）
+        startDate = '10-01-2026';
+        endDate = '16-01-2026';
+      }
+      
+      // 创建日历事件数据
+      const eventTitle = `Skin Lab 免费皮肤体验 - ${customerName}`;
+      const eventDescription = `预约ID: ${bookingId}\n皮肤健康体验: ${customerWeek}\n地点: Suite 05-26, Level 5, Indah Walk, 3, Jalan Indah 15, Taman Bukit Indah, 81200 Johor Bahru\n电话: +6016-9560425\n请提前15分钟到达`;
+      
+      // 格式化日期为YYYYMMDD
+      function formatDateForCalendar(dateStr) {
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+          return `2026${parts[1]}${parts[0]}`; // 假设是2026年
+        }
+        return '20260110'; // 默认日期
+      }
+      
+      // 创建ICS文件内容
+      const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+SUMMARY:${eventTitle}
+DTSTART;VALUE=DATE:${formatDateForCalendar(startDate)}
+DTEND;VALUE=DATE:${formatDateForCalendar(endDate)}
+DESCRIPTION:${eventDescription.replace(/\n/g, '\\n')}
+LOCATION:Suite 05-26, Level 5, Indah Walk, 3, Jalan Indah 15, Taman Bukit Indah, 81200 Johor Bahru
+STATUS:CONFIRMED
+SEQUENCE:0
+BEGIN:VALARM
+TRIGGER:-PT60M
+DESCRIPTION:Reminder
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR`;
+      
+      // 创建下载链接
+      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `skinlab-appointment-${bookingId}.ics`;
+      link.click();
+      
+      // 清理
+      window.URL.revokeObjectURL(url);
+      
+      // 显示成功消息
+      alert('日历文件已下载！\n\n请使用手机的日历应用导入此文件，或通过电子邮件发送到您的设备。\n\n实际体验时间以电话确认为准。');
     }
     
     // 格式化日期时间函数
@@ -897,6 +982,7 @@
       console.log('%c感谢您选择Skin Lab Bukit Indah分店', 'color: #6C63FF; font-size: 14px;');
       console.log('%c联系方式: +6016-9560425 | jiayee344@gmail.com', 'color: #36D1DC; font-size: 12px;');
       console.log('%c预约信息已保存到Google Sheets', 'color: #4CAF50; font-size: 12px;');
+      console.log('%cGoogle地图链接: https://maps.app.goo.gl/wi2HBpoNo8dkpF8A9', 'color: #FF9800; font-size: 12px;');
       
       // 自动滚动到顶部
       window.scrollTo(0, 0);

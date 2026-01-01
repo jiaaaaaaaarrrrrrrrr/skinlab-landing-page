@@ -1200,15 +1200,15 @@ section {
 /* ===== 优化共鸣部分图片显示 ===== */
 .concern-item {
   text-align: center;
-  padding: 0 0 40px; /* 修改padding，因为图片需要占用顶部空间 */
+  padding: 0 0 40px;
   border-radius: 25px;
   background-color: var(--light);
   transition: var(--transition);
   position: relative;
   z-index: 1;
   transform-style: preserve-3d;
-  overflow: hidden; /* 确保图片不溢出 */
-  height: 100%; /* 确保所有卡片高度一致 */
+  overflow: hidden;
+  height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -1228,12 +1228,12 @@ section {
 .concern-image-container {
   position: relative;
   width: 100%;
-  height: 380px; /* 增加容器高度以显示更多图片 */
+  height: 380px;
   overflow: hidden;
   border-radius: 25px 25px 0 0;
   margin-bottom: 25px;
-  background: linear-gradient(135deg, #F8F9FF, #E6E9FF); /* 添加渐变背景 */
-  flex-shrink: 0; /* 防止图片容器收缩 */
+  background: linear-gradient(135deg, #F8F9FF, #E6E9FF);
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
@@ -1242,15 +1242,14 @@ section {
   }
 }
 
-/* 优化图片显示 - 完整显示图片 */
 .concern-image {
   width: 100%;
   height: 100%;
-  object-fit: contain; /* 改为contain以完整显示图片 */
-  object-position: center; /* 图片居中显示 */
+  object-fit: contain;
+  object-position: center;
   transition: var(--transition-slow);
-  background-color: #f8f9ff; /* 添加背景色填充空白区域 */
-  padding: 15px; /* 给图片添加内边距，避免紧贴边缘 */
+  background-color: #f8f9ff;
+  padding: 15px;
 }
 
 .concern-image-overlay {
@@ -1262,22 +1261,21 @@ section {
   background: linear-gradient(to bottom, rgba(108, 99, 255, 0.05), rgba(108, 99, 255, 0.1));
   z-index: 2;
   transition: var(--transition);
-  pointer-events: none; /* 确保覆盖层不影响点击 */
+  pointer-events: none;
 }
 
 .concern-item:hover .concern-image {
-  transform: scale(1.03); /* 轻微放大效果 */
+  transform: scale(1.03);
 }
 
 .concern-item:hover .concern-image-overlay {
   background: linear-gradient(to bottom, rgba(108, 99, 255, 0.1), rgba(108, 99, 255, 0.15));
 }
 
-/* 调整图标位置，因为现在有图片了 */
 .concern-icon {
   position: relative;
   z-index: 3;
-  margin-top: -40px; /* 让图标部分覆盖在图片上 */
+  margin-top: -40px;
   margin-bottom: 15px;
   width: 80px;
   height: 80px;
@@ -1291,7 +1289,7 @@ section {
   font-size: 32px;
   transform: perspective(500px) translateZ(0);
   transition: var(--transition);
-  flex-shrink: 0; /* 防止图标收缩 */
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px) {
@@ -1308,13 +1306,12 @@ section {
   transform: perspective(500px) translateZ(30px) rotateY(15deg);
 }
 
-/* 调整卡片内容位置 */
 .concern-item h3 {
   font-size: 22px;
   margin-bottom: 15px;
   color: var(--dark);
   padding: 0 20px;
-  flex-grow: 0; /* 防止标题过度拉伸 */
+  flex-grow: 0;
   word-break: keep-all;
   overflow-wrap: break-word;
   line-height: 1.3;
@@ -1334,7 +1331,7 @@ section {
   line-height: 1.7;
   font-size: 15px;
   padding: 0 20px;
-  flex-grow: 1; /* 让描述文本填充剩余空间 */
+  flex-grow: 1;
   margin-bottom: 20px;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -1348,21 +1345,20 @@ section {
   }
 }
 
-/* 为不同图片添加特定的object-position，确保重要内容可见 */
 .concern-item:nth-child(1) .concern-image {
-  object-position: center 20%; /* 第一张图片显示上半部分 */
+  object-position: center 20%;
 }
 
 .concern-item:nth-child(2) .concern-image {
-  object-position: center 40%; /* 第二张图片显示中间部分 */
+  object-position: center 40%;
 }
 
 .concern-item:nth-child(3) .concern-image {
-  object-position: center 60%; /* 第三张图片显示下半部分 */
+  object-position: center 60%;
 }
 
 .concern-item:nth-child(4) .concern-image {
-  object-position: center 30%; /* 第四张图片显示中上部分 */
+  object-position: center 30%;
 }
 
 /* ===== BENEFITS SECTION ===== */
@@ -2970,9 +2966,8 @@ section {
     grid-template-columns: repeat(2, 1fr);
   }
   
-  /* 响应式调整图片容器 */
   .concern-image-container {
-    height: 300px; /* 在中等屏幕上减小高度 */
+    height: 300px;
   }
 }
 
@@ -2999,9 +2994,8 @@ section {
   .floating-3 { left: -15px; }
   .floating-4 { right: -15px; }
   
-  /* 响应式调整图片容器 */
   .concern-image-container {
-    height: 250px; /* 在小平板上减小高度 */
+    height: 250px;
   }
 }
 
@@ -3016,13 +3010,12 @@ section {
     font-size: 28px;
   }
   
-  /* 响应式调整图片容器 */
   .concern-image-container {
-    height: 220px; /* 在手机上进一步减小高度 */
+    height: 220px;
   }
   
   .concern-image {
-    padding: 10px; /* 减小内边距 */
+    padding: 10px;
   }
 }
 
@@ -3041,13 +3034,12 @@ section {
     width: 100%;
   }
   
-  /* 响应式调整图片容器 */
   .concern-image-container {
-    height: 200px; /* 在小手机上减小高度 */
+    height: 200px;
   }
 }
 
-/* 移动端特别优化 - 确保文字整齐排列 */
+/* 移动端特别优化 */
 @media (max-width: 767px) {
   body {
     font-size: 15px;
@@ -3069,14 +3061,12 @@ section {
     padding: 0 15px;
   }
   
-  /* 确保所有按钮文字完整显示 */
   .btn {
     text-align: center;
     line-height: 1.3;
     padding: 12px 20px;
   }
   
-  /* 确保卡片内文字整齐 */
   .card-3d h3,
   .card-3d p {
     word-break: keep-all;
@@ -3084,7 +3074,6 @@ section {
     line-height: 1.4;
   }
   
-  /* 确保列表项整齐 */
   .feature-item,
   .outcome-item,
   .benefit-card {
@@ -3134,5 +3123,53 @@ section {
   .btn {
     font-size: 14px;
     padding: 10px 16px;
+  }
+}
+
+/* ===== 成功页面移动端文字排列修复 ===== */
+@media (max-width: 768px) {
+  .success-message {
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.4 !important;
+    text-align: center !important;
+    padding: 0 10px !important;
+  }
+  
+  .success-title {
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.2 !important;
+    text-align: center !important;
+    padding: 0 10px !important;
+  }
+  
+  .step-content h3 {
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.3 !important;
+  }
+  
+  .step-content p {
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+    line-height: 1.5 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .success-message {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+    padding: 0 5px !important;
+  }
+  
+  .success-title {
+    font-size: 24px !important;
+    line-height: 1.2 !important;
   }
 }
