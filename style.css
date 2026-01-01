@@ -984,7 +984,7 @@ section {
   50% { border-color: var(--primary); }
 }
 
-/* ===== EMPATHY SECTION ===== */
+/* ===== EMPATHY SECTION - 专门针对PNG大图优化 ===== */
 .empathy {
   background-color: white;
   position: relative;
@@ -1024,13 +1024,101 @@ section {
 
 .concern-item {
   text-align: center;
-  padding: 40px 25px;
+  padding: 0;
   border-radius: 25px;
   background-color: var(--light);
   transition: var(--transition);
   position: relative;
   z-index: 1;
   transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-height: 420px;
+  overflow: hidden;
+}
+
+/* 针对PNG大图（2481x3714像素）的优化容器 */
+.concern-image-container {
+  width: 100%;
+  height: 240px; /* 增加高度以容纳更大图片 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.08), rgba(54, 209, 220, 0.04));
+  position: relative;
+  overflow: hidden;
+  padding: 25px;
+}
+
+.concern-image {
+  width: 180px; /* 增加图片显示区域 */
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* PNG大图优化设置 */
+.concern-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 使用cover来保持比例并填充容器 */
+  object-position: center; /* 确保图片中心显示 */
+  border-radius: 15px; /* 添加圆角 */
+  filter: 
+    drop-shadow(0 15px 30px rgba(108, 99, 255, 0.25))
+    contrast(1.05) /* 轻微增加对比度 */
+    saturate(1.1); /* 轻微增加饱和度 */
+  transition: var(--transition-slow);
+  transform: perspective(800px) translateZ(0) scale(1);
+  /* 优化PNG显示 */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.concern-item:hover .concern-img {
+  transform: perspective(800px) translateZ(40px) rotateY(10deg) scale(1.05);
+  filter: 
+    drop-shadow(0 20px 40px rgba(108, 99, 255, 0.4))
+    contrast(1.1)
+    saturate(1.2);
+}
+
+.image-glow-effect {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--primary) 0%, rgba(108, 99, 255, 0) 70%);
+  filter: blur(30px);
+  opacity: 0.2;
+  z-index: 1;
+  transition: var(--transition);
+  border-radius: 50%;
+}
+
+.concern-item:hover .image-glow-effect {
+  opacity: 0.3;
+  transform: translate(-50%, -50%) scale(1.15);
+}
+
+.concern-content {
+  padding: 30px 25px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .concern-item::before {
@@ -1041,39 +1129,54 @@ section {
   width: 100%;
   height: 5px;
   background: linear-gradient(90deg, var(--primary), var(--accent));
-  z-index: 2;
+  z-index: 3;
   border-radius: 25px 25px 0 0;
 }
 
 .concern-icon {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   background: linear-gradient(135deg, var(--primary), var(--accent));
-  border-radius: 25px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 25px;
+  margin: -35px auto 25px;
   color: white;
-  font-size: 32px;
+  font-size: 28px;
   transform: perspective(500px) translateZ(0);
   transition: var(--transition);
+  position: relative;
+  z-index: 3;
+  box-shadow: 
+    0 10px 20px rgba(108, 99, 255, 0.3),
+    0 15px 30px rgba(108, 99, 255, 0.2);
 }
 
 .concern-item:hover .concern-icon {
-  transform: perspective(500px) translateZ(30px) rotateY(15deg);
+  transform: perspective(500px) translateZ(50px) rotateY(20deg);
+  box-shadow: 
+    0 15px 30px rgba(108, 99, 255, 0.5),
+    0 20px 40px rgba(108, 99, 255, 0.3);
 }
 
 .concern-item h3 {
-  font-size: 22px;
+  font-size: 24px;
   margin-bottom: 15px;
   color: var(--dark);
+  z-index: 2;
+  position: relative;
+  line-height: 1.3;
 }
 
 .concern-item p {
   color: var(--gray);
   line-height: 1.7;
-  font-size: 15px;
+  font-size: 16px;
+  z-index: 2;
+  position: relative;
+  flex: 1;
+  margin-bottom: 0;
 }
 
 /* ===== BENEFITS SECTION ===== */
@@ -2009,7 +2112,7 @@ section {
     0 25px 55px rgba(255, 101, 132, 0.4);
 }
 
-/* ===== RESPONSIVE STYLES ===== */
+/* ===== RESPONSIVE STYLES - 针对PNG大图优化 ===== */
 @media (max-width: 1200px) {
   .container {
     max-width: 100%;
@@ -2067,6 +2170,35 @@ section {
   
   .features-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* 平板上的PNG大图优化 */
+  .concern-image {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .concern-image-container {
+    height: 200px;
+  }
+  
+  .concern-icon {
+    width: 65px;
+    height: 65px;
+    font-size: 26px;
+    margin: -32.5px auto 22px;
+  }
+  
+  .concern-item {
+    min-height: 400px;
+  }
+  
+  .concern-item h3 {
+    font-size: 22px;
+  }
+  
+  .concern-item p {
+    font-size: 15px;
   }
 }
 
@@ -2175,6 +2307,35 @@ section {
   .floating-2 { right: -15px; }
   .floating-3 { left: -15px; }
   .floating-4 { right: -15px; }
+  
+  /* 移动设备上的PNG大图优化 */
+  .concern-image {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .concern-image-container {
+    height: 180px;
+  }
+  
+  .concern-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    margin: -30px auto 20px;
+  }
+  
+  .concern-item {
+    min-height: 380px;
+  }
+  
+  .concern-item h3 {
+    font-size: 20px;
+  }
+  
+  .concern-item p {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -2219,6 +2380,35 @@ section {
   .hero-title-2 {
     font-size: 28px;
   }
+  
+  /* 小屏幕上的PNG大图优化 */
+  .concern-image {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .concern-image-container {
+    height: 160px;
+  }
+  
+  .concern-icon {
+    width: 55px;
+    height: 55px;
+    font-size: 22px;
+    margin: -27.5px auto 18px;
+  }
+  
+  .concern-item {
+    min-height: 360px;
+  }
+  
+  .concern-item h3 {
+    font-size: 18px;
+  }
+  
+  .concern-item p {
+    font-size: 13px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -2244,5 +2434,35 @@ section {
   .detail-item {
     min-width: auto;
     width: 100%;
+  }
+  
+  /* 移动设备上的PNG大图优化 */
+  .concern-image {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .concern-image-container {
+    height: 140px;
+  }
+  
+  .concern-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    margin: -25px auto 15px;
+  }
+  
+  .concern-item {
+    min-height: 340px;
+  }
+  
+  .concern-item h3 {
+    font-size: 17px;
+  }
+  
+  .concern-item p {
+    font-size: 12px;
+    line-height: 1.6;
   }
 }
