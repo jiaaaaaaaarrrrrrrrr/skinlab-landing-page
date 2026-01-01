@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>预约成功 | Skin Lab 免费7天皮肤体验 - Bukit Indah</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,25 +91,24 @@
     }
     
     .success-title {
-      font-size: clamp(28px, 4vw, 42px);
+      font-size: clamp(36px, 4vw, 42px);
       margin-bottom: 15px;
       color: #2D2B55;
       text-align: center;
       line-height: 1.2;
-      word-break: break-word;
+      word-break: keep-all;
       overflow-wrap: break-word;
-      padding: 0 10px;
     }
     
     .success-message {
-      font-size: clamp(16px, 2vw, 20px);
+      font-size: clamp(18px, 2vw, 20px);
       color: #6C63FF;
       margin-bottom: 50px;
       text-align: center;
       font-weight: 600;
-      word-break: break-word;
-      overflow-wrap: break-word;
       line-height: 1.4;
+      word-break: keep-all;
+      overflow-wrap: break-word;
       padding: 0 10px;
     }
     
@@ -119,14 +118,12 @@
     }
     
     .success-details h2 {
-      font-size: clamp(24px, 3vw, 32px);
+      font-size: clamp(28px, 3vw, 32px);
       margin-bottom: 40px;
       color: #2D2B55;
       text-align: center;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      line-height: 1.3;
-      white-space: normal;
+      line-height: 1.2;
+      word-break: keep-all;
     }
     
     .steps {
@@ -143,6 +140,14 @@
       border-radius: 22px;
       border: 1px solid #E6E6F0;
       transition: all 0.3s ease;
+    }
+    
+    @media (max-width: 768px) {
+      .step {
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px;
+      }
     }
     
     .step:hover {
@@ -167,31 +172,41 @@
         0 15px 30px rgba(108, 99, 255, 0.2);
     }
     
+    @media (max-width: 768px) {
+      .step-number {
+        width: 55px;
+        height: 55px;
+        font-size: 22px;
+      }
+    }
+    
     .step-content h3 {
-      font-size: clamp(18px, 2vw, 24px);
+      font-size: 24px;
       margin-bottom: 12px;
       color: #2D2B55;
-      word-break: break-word;
-      overflow-wrap: break-word;
       line-height: 1.3;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .step-content h3 {
+        font-size: 20px;
+      }
     }
     
     .step-content p {
       color: #666;
       line-height: 1.6;
-      font-size: clamp(14px, 1.5vw, 16px);
-      word-break: break-word;
+      font-size: 16px;
+      word-break: keep-all;
       overflow-wrap: break-word;
-      white-space: normal;
     }
     
-    /* 修复步骤2的文字排列问题 */
-    .step:nth-child(2) .step-content p {
-      display: block;
-      word-break: break-word;
-      overflow-wrap: break-word;
-      white-space: normal;
-      line-height: 1.5;
+    @media (max-width: 768px) {
+      .step-content p {
+        font-size: 15px;
+        line-height: 1.5;
+      }
     }
     
     .location-info {
@@ -202,15 +217,27 @@
       margin-bottom: 45px;
     }
     
+    @media (max-width: 768px) {
+      .location-info {
+        padding: 25px 20px;
+      }
+    }
+    
     .location-info h3 {
-      font-size: clamp(20px, 2.5vw, 26px);
+      font-size: 26px;
       margin-bottom: 20px;
       color: #2D2B55;
       display: flex;
       align-items: center;
       gap: 12px;
-      word-break: break-word;
-      overflow-wrap: break-word;
+      line-height: 1.2;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .location-info h3 {
+        font-size: 22px;
+      }
     }
     
     .location-info h3 i {
@@ -220,7 +247,7 @@
     .location-address {
       color: #666;
       line-height: 1.6;
-      font-size: clamp(14px, 1.5vw, 16px);
+      font-size: 16px;
       margin-bottom: 25px;
       display: flex;
       align-items: flex-start;
@@ -229,8 +256,18 @@
       background: white;
       border-radius: 14px;
       border-left: 5px solid #6C63FF;
-      word-break: break-word;
+      word-break: keep-all;
       overflow-wrap: break-word;
+    }
+    
+    @media (max-width: 768px) {
+      .location-address {
+        font-size: 15px;
+        line-height: 1.5;
+        padding: 15px;
+        flex-direction: column;
+        gap: 8px;
+      }
     }
     
     .location-address i {
@@ -246,6 +283,12 @@
       cursor: pointer;
       transition: all 0.3s ease;
       background: rgba(108, 99, 255, 0.05);
+    }
+    
+    @media (max-width: 768px) {
+      .map-placeholder {
+        padding: 25px 15px;
+      }
     }
     
     .map-placeholder:hover {
@@ -266,24 +309,36 @@
       font-size: 44px;
     }
     
+    @media (max-width: 768px) {
+      .map-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 34px;
+      }
+    }
+    
     .map-placeholder > p {
       color: #666;
-      font-size: clamp(14px, 1.5vw, 16px);
+      font-size: 16px;
       margin-bottom: 8px;
       font-weight: 600;
-      word-break: break-word;
-      overflow-wrap: break-word;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .map-placeholder > p {
+        font-size: 15px;
+      }
     }
     
     .map-note {
       color: #36D1DC !important;
-      font-size: clamp(12px, 1.2vw, 14px) !important;
+      font-size: 14px !important;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      word-break: break-word;
-      overflow-wrap: break-word;
+      word-break: keep-all;
     }
     
     .success-cta {
@@ -294,11 +349,30 @@
       flex-wrap: wrap;
     }
     
+    @media (max-width: 768px) {
+      .success-cta {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 35px;
+      }
+    }
+    
     .success-cta .btn {
       padding: 18px 35px;
       font-size: 17px;
       min-width: 180px;
       justify-content: center;
+      word-break: keep-all;
+      white-space: nowrap;
+    }
+    
+    @media (max-width: 768px) {
+      .success-cta .btn {
+        width: 100%;
+        padding: 16px 30px;
+        font-size: 16px;
+        white-space: normal;
+      }
     }
     
     .secondary-btn {
@@ -321,6 +395,13 @@
       border: 1px solid #E6E6F0;
     }
     
+    @media (max-width: 768px) {
+      .contact-reminder {
+        padding: 20px 15px;
+        margin-bottom: 25px;
+      }
+    }
+    
     .contact-reminder h4 {
       font-size: 22px;
       margin-bottom: 20px;
@@ -328,6 +409,14 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .contact-reminder h4 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
     }
     
     .contact-reminder h4 i {
@@ -341,8 +430,14 @@
       gap: 12px;
       color: #666;
       font-size: 16px;
-      word-break: break-word;
-      overflow-wrap: break-word;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .contact-reminder p {
+        font-size: 15px;
+        line-height: 1.5;
+      }
     }
     
     .contact-reminder i {
@@ -357,6 +452,12 @@
       border: 1px solid #FFECB3;
     }
     
+    @media (max-width: 768px) {
+      .success-tips {
+        padding: 20px 15px;
+      }
+    }
+    
     .success-tips h4 {
       font-size: 22px;
       margin-bottom: 20px;
@@ -364,6 +465,14 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .success-tips h4 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
     }
     
     .success-tips h4 i {
@@ -382,8 +491,16 @@
       line-height: 1.5;
       padding-left: 32px;
       position: relative;
-      word-break: break-word;
+      word-break: keep-all;
       overflow-wrap: break-word;
+    }
+    
+    @media (max-width: 768px) {
+      .success-tips li {
+        font-size: 15px;
+        line-height: 1.4;
+        padding-left: 28px;
+      }
     }
     
     .success-tips li::before {
@@ -412,6 +529,13 @@
       margin-bottom: 35px;
     }
     
+    @media (max-width: 768px) {
+      .booking-info {
+        padding: 20px 15px;
+        margin-bottom: 25px;
+      }
+    }
+    
     .booking-info h4 {
       font-size: 22px;
       margin-bottom: 20px;
@@ -419,6 +543,14 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .booking-info h4 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
     }
     
     .booking-info h4 i {
@@ -431,6 +563,13 @@
       gap: 18px;
     }
     
+    @media (max-width: 768px) {
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+    
     .info-item {
       display: flex;
       align-items: center;
@@ -439,20 +578,37 @@
       background: white;
       border-radius: 14px;
       border: 1px solid #E6E6F0;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .info-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 10px;
+      }
     }
     
     .info-item i {
       color: #6C63FF;
       font-size: 18px;
       width: 26px;
-      flex-shrink: 0;
     }
     
     .info-label {
       font-weight: 600;
       color: #666;
       min-width: 70px;
-      flex-shrink: 0;
+      word-break: keep-all;
+    }
+    
+    @media (max-width: 768px) {
+      .info-label {
+        min-width: auto;
+        width: 100%;
+        font-size: 14px;
+      }
     }
     
     .info-value {
@@ -463,11 +619,11 @@
       overflow-wrap: break-word;
     }
     
-    /* 修复邮箱显示问题 */
-    .info-item:nth-child(4) .info-value {
-      word-break: break-all;
-      overflow-wrap: break-word;
-      font-size: 0.9em;
+    @media (max-width: 768px) {
+      .info-value {
+        width: 100%;
+        font-size: 15px;
+      }
     }
     
     /* 提交状态提示 */
@@ -478,6 +634,7 @@
       border-radius: 12px;
       font-size: 14px;
       display: none;
+      word-break: keep-all;
     }
     
     .submit-status.success {
@@ -498,123 +655,10 @@
       margin-right: 8px;
     }
     
-    /* 响应式设计 */
     @media (max-width: 768px) {
-      .success-container {
-        padding: 0 10px;
-      }
-      
-      .success-content {
-        padding: 45px 25px;
-        border-radius: 25px;
-      }
-      
-      .success-title {
-        font-size: 32px;
-        line-height: 1.2;
-      }
-      
-      .success-message {
-        font-size: 17px;
-        margin-bottom: 35px;
-        line-height: 1.4;
-      }
-      
-      .success-details h2 {
-        font-size: 26px;
-        margin-bottom: 35px;
-        white-space: normal;
-        line-height: 1.3;
-      }
-      
-      .step {
-        flex-direction: column;
-        gap: 15px;
-        padding: 25px 20px;
-      }
-      
-      .step-number {
-        width: 55px;
-        height: 55px;
-        font-size: 22px;
-      }
-      
-      .step-content h3 {
-        font-size: 20px;
-        line-height: 1.3;
-      }
-      
-      .step-content p {
-        font-size: 15px;
-        line-height: 1.5;
-        white-space: normal;
-      }
-      
-      /* 修复步骤2的文字排列 */
-      .step:nth-child(2) .step-content p {
-        font-size: 15px;
-        line-height: 1.5;
-        word-break: break-word;
-        overflow-wrap: break-word;
-      }
-      
-      .location-info {
-        padding: 25px 20px;
-      }
-      
-      .location-address {
-        font-size: 15px;
-        flex-direction: column;
-        gap: 8px;
-        align-items: flex-start;
-        line-height: 1.5;
-        word-break: break-word;
-      }
-      
-      .success-cta {
-        flex-direction: column;
-      }
-      
-      .success-cta .btn {
-        width: 100%;
-      }
-      
-      .contact-reminder p, .success-tips li {
-        font-size: 15px;
-        line-height: 1.5;
-        word-break: break-word;
-      }
-      
-      .booking-info {
-        padding: 20px 15px;
-      }
-      
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .info-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      
-      .info-label, .info-value {
-        width: 100%;
-        min-width: auto;
-      }
-      
-      /* 修复邮箱显示 */
-      .info-item:nth-child(4) .info-value {
-        font-size: 14px;
-        word-break: break-all;
-      }
-    }
-    
-    @media (max-width: 480px) {
       .success-content {
         padding: 35px 20px;
-        border-radius: 20px;
+        border-radius: 25px;
       }
       
       .success-icon {
@@ -625,46 +669,17 @@
       
       .success-title {
         font-size: 28px;
-        line-height: 1.2;
       }
       
       .success-message {
-        font-size: 16px;
-        line-height: 1.4;
-      }
-      
-      .location-address {
-        font-size: 14px;
-        padding: 12px;
-      }
-      
-      .map-placeholder {
-        padding: 25px 15px;
-      }
-      
-      .map-icon {
-        width: 75px;
-        height: 75px;
-        font-size: 32px;
-      }
-      
-      /* 修复步骤2的文字排列 */
-      .step:nth-child(2) .step-content p {
-        font-size: 14px;
-        line-height: 1.5;
-        word-break: break-word;
-      }
-      
-      .step-content p {
-        font-size: 14px;
-        line-height: 1.5;
+        font-size: 18px;
+        padding: 0 5px;
       }
     }
     
-    /* 超小屏幕优化 */
-    @media (max-width: 360px) {
+    @media (max-width: 480px) {
       .success-content {
-        padding: 30px 15px;
+        padding: 25px 15px;
       }
       
       .success-title {
@@ -672,25 +687,7 @@
       }
       
       .success-message {
-        font-size: 15px;
-      }
-      
-      .step {
-        padding: 20px 15px;
-      }
-      
-      /* 修复步骤2的文字排列 */
-      .step:nth-child(2) .step-content p {
-        font-size: 13px;
-        line-height: 1.4;
-      }
-      
-      .contact-reminder p, .success-tips li {
-        font-size: 14px;
-      }
-      
-      .info-item:nth-child(4) .info-value {
-        font-size: 13px;
+        font-size: 16px;
       }
     }
   </style>
@@ -713,8 +710,10 @@
           <i class="fas fa-check-circle"></i>
           <div class="icon-glow"></div>
         </div>
+        
+        <!-- 优化标题文字显示 -->
         <h1 class="success-title">预约成功！</h1>
-        <p class="success-message">感谢您预约 Skin Lab 免费7天皮肤健康体验</p>
+        <p class="success-message">感谢您预约<br class="mobile-break">Skin Lab 免费7天皮肤健康体验</p>
         
         <!-- 预约信息展示 -->
         <div class="booking-info" id="bookingInfo">
@@ -759,7 +758,7 @@
         </div>
         
         <div class="success-details">
-          <h2>下一步该做什么？</h2>
+          <h2><span class="section-title-line">下一步</span><span class="section-title-line">该做什么？</span></h2>
           
           <div class="steps">
             <div class="step card-3d">
@@ -834,78 +833,146 @@
   </section>
   
   <script>
-    // 打开Google地图（直接跳转到指定链接）
+    // 打开Google地图 - 直接跳转到指定链接
     function openGoogleMaps() {
-      const googleMapsUrl = "https://maps.app.goo.gl/wi2HBpoNo8dkpF8A9";
-      window.open(googleMapsUrl, '_blank');
+      window.open('https://maps.app.goo.gl/wi2HBpoNo8dkpF8A9', '_blank');
     }
     
-    // 添加到日历功能（增强版）
+    // 添加到日历功能 - 改进版
     function addToCalendar() {
-      // 从页面获取预约信息
-      const customerName = document.getElementById('customerName').textContent || '皮肤体验客户';
-      const bookingId = document.getElementById('bookingId').textContent;
+      // 获取预约信息
+      const customerName = document.getElementById('customerName').textContent;
       const customerWeek = document.getElementById('customerWeek').textContent;
+      const bookingId = document.getElementById('bookingId').textContent;
       
-      // 解析体验周次
-      let startDate, endDate;
-      const weekMatch = customerWeek.match(/\((\d{2}-\d{2}-\d{4})\s至\s(\d{2}-\d{2}-\d{4})\)/);
-      
-      if (weekMatch && weekMatch.length === 3) {
-        startDate = weekMatch[1];
-        endDate = weekMatch[2];
-      } else {
-        // 默认日期（第1周）
-        startDate = '10-01-2026';
-        endDate = '16-01-2026';
+      // 解析体验周次日期
+      let eventDate = new Date();
+      if (customerWeek.includes('第1周')) {
+        // 第1周 (10-01-2026 至 16-01-2026)
+        eventDate = new Date('2026-01-10');
+      } else if (customerWeek.includes('第2周')) {
+        eventDate = new Date('2026-01-17');
+      } else if (customerWeek.includes('第3周')) {
+        eventDate = new Date('2026-01-24');
       }
       
-      // 创建日历事件数据
-      const eventTitle = `Skin Lab 免费皮肤体验 - ${customerName}`;
-      const eventDescription = `预约ID: ${bookingId}\n皮肤健康体验: ${customerWeek}\n地点: Suite 05-26, Level 5, Indah Walk, 3, Jalan Indah 15, Taman Bukit Indah, 81200 Johor Bahru\n电话: +6016-9560425\n请提前15分钟到达`;
+      // 格式化为iCal格式
+      const startDate = formatDateForICS(eventDate, '10:00');
+      const endDate = formatDateForICS(eventDate, '11:30');
       
-      // 格式化日期为YYYYMMDD
-      function formatDateForCalendar(dateStr) {
-        const parts = dateStr.split('-');
-        if (parts.length === 3) {
-          return `2026${parts[1]}${parts[0]}`; // 假设是2026年
-        }
-        return '20260110'; // 默认日期
-      }
+      // 创建事件标题和描述
+      const eventTitle = `Skin Lab 免费7天皮肤体验预约`;
+      const eventDescription = `预约ID: ${bookingId}\n姓名: ${customerName}\n体验周次: ${customerWeek}\n地点: Suite 05-26, Level 5, Indah Walk, 3, Jalan Indah 15, Taman Bukit Indah, 81200 Johor Bahru\n联系电话: +6016-9560425`;
+      const location = 'Suite 05-26, Level 5, Indah Walk, 3, Jalan Indah 15, Taman Bukit Indah, 81200 Johor Bahru';
       
-      // 创建ICS文件内容
-      const icsContent = `BEGIN:VCALENDAR
+      // 创建iCal文件
+      const icsContent = createICalFile(eventTitle, eventDescription, location, startDate, endDate);
+      
+      // 下载iCal文件
+      downloadICalFile(icsContent, `Skin-Lab-Appointment-${bookingId}.ics`);
+      
+      // 显示成功消息
+      showCalendarSuccessMessage();
+    }
+    
+    // 格式化日期为iCal格式
+    function formatDateForICS(date, time) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      
+      // 解析时间
+      const [hours, minutes] = time.split(':');
+      
+      return `${year}${month}${day}T${hours}${minutes}00`;
+    }
+    
+    // 创建iCal文件内容
+    function createICalFile(title, description, location, startDate, endDate) {
+      return `BEGIN:VCALENDAR
 VERSION:2.0
-CALSCALE:GREGORIAN
+PRODID:-//Skin Lab//Free Skin Experience//EN
 BEGIN:VEVENT
-SUMMARY:${eventTitle}
-DTSTART;VALUE=DATE:${formatDateForCalendar(startDate)}
-DTEND;VALUE=DATE:${formatDateForCalendar(endDate)}
-DESCRIPTION:${eventDescription.replace(/\n/g, '\\n')}
-LOCATION:Suite 05-26, Level 5, Indah Walk, 3, Jalan Indah 15, Taman Bukit Indah, 81200 Johor Bahru
+UID:${Date.now()}@skinlab.com
+DTSTAMP:${formatDateForICS(new Date(), '00:00')}
+DTSTART:${startDate}
+DTEND:${endDate}
+SUMMARY:${title}
+DESCRIPTION:${description.replace(/\n/g, '\\n')}
+LOCATION:${location}
 STATUS:CONFIRMED
 SEQUENCE:0
 BEGIN:VALARM
-TRIGGER:-PT60M
-DESCRIPTION:Reminder
+TRIGGER:-PT15M
 ACTION:DISPLAY
+DESCRIPTION:Reminder
 END:VALARM
 END:VEVENT
 END:VCALENDAR`;
-      
-      // 创建下载链接
-      const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-      const url = window.URL.createObjectURL(blob);
+    }
+    
+    // 下载iCal文件
+    function downloadICalFile(content, filename) {
+      const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
       const link = document.createElement('a');
-      link.href = url;
-      link.download = `skinlab-appointment-${bookingId}.ics`;
+      link.href = window.URL.createObjectURL(blob);
+      link.download = filename;
+      document.body.appendChild(link);
       link.click();
+      document.body.removeChild(link);
+    }
+    
+    // 显示添加到日历成功消息
+    function showCalendarSuccessMessage() {
+      // 创建自定义通知
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #4CAF50, #8BC34A);
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+        word-break: keep-all;
+      `;
       
-      // 清理
-      window.URL.revokeObjectURL(url);
+      notification.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <i class="fas fa-calendar-check" style="font-size: 20px;"></i>
+          <div>
+            <strong style="display: block; margin-bottom: 5px;">日历事件已创建！</strong>
+            <div style="font-size: 13px; opacity: 0.9;">
+              请检查您的日历应用<br>
+              确认保存预约时间
+            </div>
+          </div>
+        </div>
+      `;
       
-      // 显示成功消息
-      alert('日历文件已下载！\n\n请使用手机的日历应用导入此文件，或通过电子邮件发送到您的设备。\n\n实际体验时间以电话确认为准。');
+      // 添加动画样式
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+      `;
+      document.head.appendChild(style);
+      
+      document.body.appendChild(notification);
+      
+      // 3秒后移除通知
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 3000);
     }
     
     // 格式化日期时间函数
@@ -1085,7 +1152,6 @@ END:VCALENDAR`;
       console.log('%c感谢您选择Skin Lab Bukit Indah分店', 'color: #6C63FF; font-size: 14px;');
       console.log('%c联系方式: +6016-9560425 | jiayee344@gmail.com', 'color: #36D1DC; font-size: 12px;');
       console.log('%c预约信息已保存到Google Sheets', 'color: #4CAF50; font-size: 12px;');
-      console.log('%cGoogle地图链接: https://maps.app.goo.gl/wi2HBpoNo8dkpF8A9', 'color: #FF9800; font-size: 12px;');
       
       // 自动滚动到顶部
       window.scrollTo(0, 0);

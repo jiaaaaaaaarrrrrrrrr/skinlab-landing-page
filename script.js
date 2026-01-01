@@ -125,7 +125,6 @@ class ParticlesSystem {
         particle.style.top = `${y}px`;
         particle.style.transform = `rotate(${particle.rotation}deg)`;
         
-        // 鼠标互动效果
         document.addEventListener('mousemove', (e) => {
           const mouseX = e.clientX;
           const mouseY = e.clientY;
@@ -875,23 +874,4 @@ console.log('%c✨ Skin Lab 免费7天皮肤体验 ✨', 'color: #6C63FF; font-s
 console.log('%c地点: Bukit Indah, 柔佛新山', 'color: #36D1DC; font-size: 14px;');
 console.log('%c日期: 10-01-2026 至 17-01-2026', 'color: #FF6584; font-size: 14px;');
 console.log('%c联系方式: +6016-9560425 | jiayee344@gmail.com', 'color: #4CAF50; font-size: 12px;');
-console.log('%cGoogle地图: https://maps.app.goo.gl/wi2HBpoNo8dkpF8A9', 'color: #FF9800; font-size: 12px;');
 console.log('%cSheetDB API: ' + SHEETDB_API, 'color: #4CAF50; font-size: 12px;');
-
-// 移动端优化：阻止页面缩放
-document.addEventListener('touchmove', function (event) {
-  if (event.scale !== 1) { event.preventDefault(); }
-}, { passive: false });
-
-// 移动端优化：修复输入框获取焦点时的页面滚动
-let isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-if (isMobile) {
-  document.querySelectorAll('input, select, textarea').forEach(input => {
-    input.addEventListener('focus', () => {
-      setTimeout(() => {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-      }, 100);
-    });
-  });
-}
