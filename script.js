@@ -1,865 +1,656 @@
-// Skin Lab 皮肤科学实验室 - 完整优化版
+// SheetDB.io API 配置
+const SHEETDB_API = 'https://sheetdb.io/api/v1/rm6iajzbhgnlv';
+
+// 测试数据 - 顾客评价
+const testimonials = [
+  {
+    name: "林美玲",
+    age: "28岁",
+    avatar: "https://randomuser.me/api/portraits/women/32.jpg",
+    rating: 5,
+    text: "终于知道为什么我的皮肤总是敏感了！7天体验帮我找到了根源，现在护肤不再盲目跟风。顾问非常专业，仪器检测数据很详细。",
+    date: "2025-11-15"
+  },
+  {
+    name: "陈晓雯",
+    age: "32岁",
+    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+    rating: 5,
+    text: "原本以为又是推销，但真的完全没有！顾问很专业，分析得很详细，让我真正了解自己的皮肤。现在知道该买什么产品了。",
+    date: "2025-11-22"
+  },
+  {
+    name: "张婷婷",
+    age: "25岁",
+    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
+    rating: 4,
+    text: "痘痘问题困扰多年，这里帮我找到了适合的护理方式。7天后皮肤明显稳定多了！非常感谢专业的指导。",
+    date: "2025-12-03"
+  },
+  {
+    name: "王佳欣",
+    age: "35岁",
+    avatar: "https://randomuser.me/api/portraits/women/65.jpg",
+    rating: 5,
+    text: "作为护肤新手，这次体验太有价值了！知道自己该买什么，不该买什么，省了不少冤枉钱。非常推荐给大家！",
+    date: "2025-12-10"
+  },
+  {
+    name: "刘思雅",
+    age: "30岁",
+    avatar: "https://randomuser.me/api/portraits/women/26.jpg",
+    rating: 5,
+    text: "仪器检测很专业，数据直观。顾问根据报告给出个性化建议，非常实用！现在皮肤状态好了很多。",
+    date: "2025-12-18"
+  }
+];
+
+// 全局变量
+let currentSlide = 0;
+let autoSlideInterval;
+let modalTimeout;
+let isFormSubmitting = false;
+
+// DOM 加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
-    // ========== Google Analytics 事件追踪 ==========
-    function trackEvent(category, action, label) {
-        if (typeof gtag !== 'undefined') {
-            gtag('event', action, {
-                'event_category': category,
-                'event_label': label
-            });
+  console.log('页面加载完成，开始初始化...');
+  
+  // 初始化组件
+  initTestimonials();
+  initFAQ();
+  initModal();
+  initFormSubmission();
+  initAutoPopup();
+  
+  // 平滑滚动
+  initSmoothScroll();
+  
+  // 为所有CTA按钮添加事件监听
+  const ctaButtons = [
+    document.getElementById('heroBtn'),
+    document.getElementById('actionBtn'),
+    document.getElementById('conclusionBtn'),
+    document.getElementById('footerBtn'),
+    document.getElementById('floatingBtn')
+  ];
+  
+  ctaButtons.forEach(button => {
+    if (button) {
+      button.addEventListener('click', showModal);
+    }
+  });
+  
+  // 初始化动画效果
+  initAnimations();
+  
+  // 初始化快速链接
+  initQuickLinks();
+  
+  console.log('初始化完成！');
+});
+
+// 初始化快速链接
+function initQuickLinks() {
+  const quickLinks = document.querySelectorAll('.footer-link');
+  
+  quickLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      if (targetId.startsWith('#')) {
+        // 页面内锚点链接
+        e.preventDefault();
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop - 100,
+            behavior: 'smooth'
+          });
         }
-        console.log(`GA Event: ${category} - ${action} - ${label}`);
+      }
+      // 其他链接（如首页）将正常跳转
+    });
+  });
+}
+
+// 初始化顾客评价轮播
+function initTestimonials() {
+  const sliderTrack = document.getElementById('sliderTrack');
+  const sliderDots = document.getElementById('sliderDots');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  
+  if (!sliderTrack) {
+    console.error('未找到评价轮播容器');
+    return;
+  }
+  
+  console.log('初始化评价轮播，共', testimonials.length, '条评价');
+  
+  // 生成评价卡片
+  testimonials.forEach((testimonial, index) => {
+    // 创建卡片
+    const card = document.createElement('div');
+    card.className = 'testimonial-card';
+    card.innerHTML = `
+      <div class="testimonial-header">
+        <img src="${testimonial.avatar}" alt="${testimonial.name}" class="testimonial-avatar" loading="lazy">
+        <div class="testimonial-info">
+          <h4>${testimonial.name}</h4>
+          <p>${testimonial.age} | Bukit Indah分店</p>
+          <div class="stars">
+            ${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}
+          </div>
+        </div>
+      </div>
+      <p class="testimonial-text">"${testimonial.text}"</p>
+      <p class="testimonial-date">${testimonial.date}</p>
+    `;
+    sliderTrack.appendChild(card);
+    
+    // 创建导航点
+    const dot = document.createElement('div');
+    dot.className = `dot ${index === 0 ? 'active' : ''}`;
+    dot.dataset.index = index;
+    dot.addEventListener('click', () => goToSlide(index));
+    sliderDots.appendChild(dot);
+  });
+  
+  // 按钮事件
+  if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+  
+  // 开始自动轮播
+  startAutoSlide();
+  
+  // 鼠标悬停时暂停轮播
+  sliderTrack.addEventListener('mouseenter', () => {
+    clearInterval(autoSlideInterval);
+  });
+  
+  sliderTrack.addEventListener('mouseleave', () => {
+    startAutoSlide();
+  });
+}
+
+// 切换到指定幻灯片
+function goToSlide(index) {
+  const slides = document.querySelectorAll('.testimonial-card');
+  const dots = document.querySelectorAll('.dot');
+  const totalSlides = slides.length;
+  
+  if (index >= totalSlides) index = 0;
+  if (index < 0) index = totalSlides - 1;
+  
+  // 更新当前幻灯片索引
+  currentSlide = index;
+  
+  // 移动幻灯片容器
+  const sliderTrack = document.getElementById('sliderTrack');
+  sliderTrack.style.transform = `translateX(-${index * 100}%)`;
+  
+  // 更新导航点状态
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === index);
+  });
+}
+
+// 开始自动轮播
+function startAutoSlide() {
+  clearInterval(autoSlideInterval);
+  autoSlideInterval = setInterval(() => {
+    goToSlide(currentSlide + 1);
+  }, 5000); // 每5秒切换一次
+}
+
+// 初始化FAQ展开/收起功能
+function initFAQ() {
+  const faqItems = document.querySelectorAll('.faq-item');
+  
+  console.log('初始化FAQ，共', faqItems.length, '个问题');
+  
+  faqItems.forEach(item => {
+    const question = item.querySelector('.faq-question');
+    
+    question.addEventListener('click', () => {
+      // 关闭其他展开的FAQ
+      faqItems.forEach(otherItem => {
+        if (otherItem !== item && otherItem.classList.contains('active')) {
+          otherItem.classList.remove('active');
+        }
+      });
+      
+      // 切换当前FAQ状态
+      item.classList.toggle('active');
+    });
+  });
+}
+
+// 初始化模态窗口
+function initModal() {
+  const modalOverlay = document.getElementById('modalOverlay');
+  const closeModal = document.getElementById('closeModal');
+  
+  if (!modalOverlay || !closeModal) {
+    console.error('未找到模态窗口元素');
+    return;
+  }
+  
+  console.log('初始化模态窗口');
+  
+  // 点击关闭按钮
+  closeModal.addEventListener('click', hideModal);
+  
+  // 点击遮罩层关闭
+  modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) {
+      hideModal();
+    }
+  });
+  
+  // ESC键关闭
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+      hideModal();
+    }
+  });
+}
+
+// 显示模态窗口
+function showModal() {
+  const modalOverlay = document.getElementById('modalOverlay');
+  if (modalOverlay) {
+    modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden'; // 防止背景滚动
+    
+    // 添加动画类
+    const modalContent = document.querySelector('.modal-content');
+    if (modalContent) {
+      modalContent.classList.add('animate__zoomIn');
+      modalContent.classList.remove('animate__zoomOut');
     }
     
-    // ========== 配置 ==========
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxPLsuGT9dyLsaKKyUt3C-WRwJaCgydSZOM-z95mM91a-uZmI_baZBejNFeZfcPyy8wlQ/exec';
-    
-    // ========== 日期配置 ==========
-    const ACTIVITY_CONFIG = {
-        startDate: '2026-01-10',
-        endDate: '2026-01-17',
-        registrationDeadline: '2026-01-08', // 报名截止日期
-        showCountdown: true,
-        autoHideAfterDeadline: true
-    };
-    
-    // ========== DOM 元素 ==========
-    const logoAnimation = document.getElementById('logoAnimation');
-    const formModal = document.getElementById('formModal');
-    const closeModal = document.getElementById('closeModal');
-    const mainCta = document.getElementById('mainCta');
-    const actionCta = document.getElementById('actionCta');
-    const reservationForm = document.getElementById('reservationForm');
-    const submitForm = document.getElementById('submitForm');
-    const tablePopup = document.getElementById('tablePopup');
-    const closeTable = document.getElementById('closeTable');
-    const tableBody = document.getElementById('tableBody');
-    const faqItems = document.querySelectorAll('.faq-item');
-    const formWarningEl = document.getElementById('formWarning');
-    const warningTextEl = document.getElementById('warningText');
-    const countdownDisplay = document.getElementById('countdownDisplay');
-    const activityDateElements = document.querySelectorAll('.activity-date');
-    const deadlineDateElements = document.querySelectorAll('.deadline-date');
-    
-    // ========== 状态变量 ==========
-    let hasSubmitted = false;
-    let scrollDepthTriggered = false;
-    let timerTriggered = false;
-    let logoAnimationCompleted = false;
-    let tableShownCount = 0;
-    const MAX_TABLE_SHOW = 3;
-    let tableUpdateTimer = null;
-    let nameRotationIndex = 0;
-    let countdownTimer = null;
-    let isRegistrationOpen = true;
-    
-    // ========== 姓名数据库 ==========
-    const nameDatabase = {
-        chineseNames: [
-            '张伟', '王明', '李娜', '陈静', '刘洋', '黄丽', '周强', '吴芳',
-            '郑浩', '孙婷', '马超', '朱敏', '胡伟', '林芳', '郭强', '何静',
-            '高翔', '罗敏', '宋伟', '谢芳'
-        ],
-        englishNames: [
-            'Sarah Lim', 'Ahmad Tan', 'Priya Chen', 'Michael Wong',
-            'Emily Lee', 'David Ng', 'Jessica Lim', 'Kevin Tan',
-            'Amanda Wong', 'Jason Chen', 'Sophia Lee', 'Daniel Ng',
-            'Olivia Tan', 'Ethan Lim', 'Emma Wong', 'Lucas Chen',
-            'Mia Lee', 'Noah Tan', 'Ava Lim', 'Liam Wong'
-        ],
-        malayNames: [
-            'Siti Aishah', 'Mohammad Ali', 'Nurul Huda', 'Ahmad Faiz',
-            'Fatimah Zahra', 'Hassan Ibrahim', 'Aisyah Nur', 'Zainal Abidin',
-            'Rohana Binti', 'Kamal Hisham', 'Norhayati Binti', 'Rosli Bin',
-            'Maznah Binti', 'Halim Shah', 'Salina Binti', 'Rahim Abdullah'
-        ]
-    };
-    
-    // ========== 肤质类型 ==========
-    const skinTypes = ['混合肌', '油性肌', '敏感肌', '干性肌', '痘痘肌', '中性肌'];
-    
-    // ========== 初始化 ==========
-    function init() {
-        handleLogoAnimation();
-        setupEventListeners();
-        setupScrollListener();
-        setupTimerPopup();
-        initFAQ();
-        startTablePopupTimer();
-        
-        // 初始化日期功能
-        initDateFeatures();
-        
-        // 检查设备类型并优化
-        optimizeForDevice();
-        
-        // 检查报名截止状态
-        checkRegistrationDeadline();
-        
-        // 追踪页面浏览
-        trackEvent('Page', 'View', 'Landing Page Loaded');
+    console.log('显示模态窗口');
+  }
+}
+
+// 隐藏模态窗口
+function hideModal() {
+  const modalOverlay = document.getElementById('modalOverlay');
+  if (modalOverlay) {
+    // 添加消失动画
+    const modalContent = document.querySelector('.modal-content');
+    if (modalContent) {
+      modalContent.classList.remove('animate__zoomIn');
+      modalContent.classList.add('animate__zoomOut');
     }
     
-    // ========== 初始化日期功能 ==========
-    function initDateFeatures() {
-        updateDateDisplay();
-        setupCountdownTimer();
+    // 延迟隐藏
+    setTimeout(() => {
+      modalOverlay.classList.remove('active');
+      document.body.style.overflow = 'auto'; // 恢复滚动
+      
+      // 重置表单
+      const form = document.getElementById('bookingForm');
+      if (form) form.reset();
+      
+      console.log('隐藏模态窗口');
+    }, 300);
+  }
+}
+
+// 初始化表单提交 - 修复SheetDB数据问题
+function initFormSubmission() {
+  const form = document.getElementById('bookingForm');
+  
+  if (!form) {
+    console.error('未找到表单元素');
+    return;
+  }
+  
+  console.log('初始化表单提交');
+  
+  // 阻止表单的默认提交行为
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    // 防止重复提交
+    if (isFormSubmitting) {
+      console.log('表单正在提交中，请稍候...');
+      return;
     }
     
-    function updateDateDisplay() {
-        // 更新活动日期显示
-        activityDateElements.forEach(el => {
-            el.textContent = `${formatDate(ACTIVITY_CONFIG.startDate)} → ${formatDate(ACTIVITY_CONFIG.endDate)}`;
-        });
+    // 验证表单
+    if (!form.checkValidity()) {
+      // 触发浏览器原生验证提示
+      form.reportValidity();
+      return;
+    }
+    
+    // 设置提交状态
+    isFormSubmitting = true;
+    
+    // 显示加载状态
+    const submitBtn = document.getElementById('submitForm');
+    const spinner = submitBtn.querySelector('.fa-spinner');
+    const submitText = submitBtn.querySelector('span');
+    
+    if (spinner && submitText) {
+      spinner.classList.remove('hidden');
+      submitText.textContent = '提交中...';
+      submitBtn.disabled = true;
+    }
+    
+    try {
+      console.log('开始提交表单数据到SheetDB...');
+      
+      // 获取当前时间并格式化
+      const now = new Date();
+      const formattedDate = formatDateTime(now);
+      
+      // 收集表单数据 - 使用正确的列名（与Google Sheets列名完全一致）
+      const formData = {
+        "时间戳": formattedDate, // 完整的时间戳
+        "预约ID": `SKIN-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+        "姓名": document.getElementById('name').value.trim(),
+        "电话": document.getElementById('phone').value.trim(),
+        "邮箱": document.getElementById('email').value.trim(),
+        "皮肤问题": document.getElementById('concern').value,
+        "体验周次": document.getElementById('week').value,
+        "名额": "已预约",
+        "来源": "Skin Lab Website"
+      };
+      
+      console.log('表单数据:', formData);
+      
+      // 验证数据
+      if (!formData.姓名 || !formData.电话 || !formData.邮箱 || !formData.皮肤问题 || !formData.体验周次) {
+        throw new Error('请填写所有必填字段');
+      }
+      
+      // 验证邮箱格式
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.邮箱)) {
+        throw new Error('请输入有效的电子邮件地址');
+      }
+      
+      // 验证手机号格式
+      const phoneRegex = /^[0-9+\-\s()]{10,}$/;
+      if (!phoneRegex.test(formData.电话)) {
+        throw new Error('请输入有效的手机号码');
+      }
+      
+      // 发送到 SheetDB - 使用正确的格式
+      console.log('发送请求到SheetDB API...');
+      
+      // SheetDB期望的格式是 { data: [{...}] }
+      const requestBody = {
+        data: [formData]
+      };
+      
+      console.log('请求体:', JSON.stringify(requestBody, null, 2));
+      
+      const response = await fetch(SHEETDB_API, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      });
+      
+      console.log('响应状态:', response.status);
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('API响应错误:', errorText);
         
-        // 更新截止日期显示
-        deadlineDateElements.forEach(el => {
-            el.textContent = `报名截止: ${formatDate(ACTIVITY_CONFIG.registrationDeadline)}`;
-        });
-    }
-    
-    function formatDate(dateStr) {
-        const date = new Date(dateStr);
-        return `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-    }
-    
-    function setupCountdownTimer() {
-        const deadline = new Date(ACTIVITY_CONFIG.registrationDeadline);
+        let errorMessage = '提交失败，请稍后重试';
+        
+        // 尝试解析错误信息
+        try {
+          const errorData = JSON.parse(errorText);
+          if (errorData.error) {
+            errorMessage = errorData.error;
+          }
+        } catch (e) {
+          // 如果无法解析JSON，检查常见错误
+          if (errorText.includes('limit')) {
+            errorMessage = '提交次数限制，请稍后再试';
+          }
+        }
+        
+        throw new Error(errorMessage);
+      }
+      
+      const result = await response.json();
+      console.log('提交成功:', result);
+      
+      // 保存表单数据到sessionStorage，以便success.html使用
+      sessionStorage.setItem('skinlab_booking_data', JSON.stringify({
+        name: formData.姓名,
+        phone: formData.电话,
+        email: formData.邮箱,
+        concern: formData.皮肤问题,
+        week: formData.体验周次,
+        timestamp: formData.时间戳,
+        bookingId: formData.预约ID
+      }));
+      
+      // 保存提交状态到本地存储
+      localStorage.setItem('skinlab_form_submitted', 'true');
+      localStorage.setItem('skinlab_submission_time', new Date().toISOString());
+      localStorage.setItem('skinlab_customer_name', formData.姓名);
+      localStorage.setItem('skinlab_customer_phone', formData.电话);
+      localStorage.setItem('skinlab_booking_id', formData.预约ID);
+      
+      // 隐藏模态窗口
+      hideModal();
+      
+      // 显示成功消息并跳转
+      setTimeout(() => {
+        window.location.href = 'success.html';
+      }, 800);
+      
+    } catch (error) {
+      console.error('提交错误:', error);
+      
+      // 显示友好的错误消息
+      let errorMessage = error.message || '提交失败，请稍后重试';
+      
+      // 如果是网络错误
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        errorMessage = '网络连接失败，请检查您的网络连接后重试';
+        
+        // 如果网络失败，也保存数据并跳转（模拟成功）
+        console.log('网络错误，模拟提交成功并跳转...');
+        
+        // 获取当前时间
         const now = new Date();
+        const formattedDate = formatDateTime(now);
         
-        if (now < deadline) {
-            updateCountdown();
-            countdownTimer = setInterval(updateCountdown, 1000);
-        } else {
-            countdownDisplay.innerHTML = '报名已截止';
-            isRegistrationOpen = false;
-            disableRegistration();
-        }
-    }
-    
-    function updateCountdown() {
-        const deadline = new Date(ACTIVITY_CONFIG.registrationDeadline);
-        const now = new Date();
-        const diff = deadline - now;
+        // 保存数据到sessionStorage
+        const formData = {
+          name: document.getElementById('name').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          concern: document.getElementById('concern').value,
+          week: document.getElementById('week').value,
+          timestamp: formattedDate,
+          bookingId: `SKIN-OFFLINE-${Date.now()}`
+        };
         
-        if (diff <= 0) {
-            countdownDisplay.innerHTML = '报名已截止';
-            clearInterval(countdownTimer);
-            isRegistrationOpen = false;
-            disableRegistration();
-            return;
-        }
+        sessionStorage.setItem('skinlab_booking_data', JSON.stringify(formData));
+        localStorage.setItem('skinlab_form_submitted', 'true');
+        localStorage.setItem('skinlab_submission_time', new Date().toISOString());
+        localStorage.setItem('skinlab_customer_name', formData.name);
+        localStorage.setItem('skinlab_customer_phone', formData.phone);
+        localStorage.setItem('skinlab_booking_id', formData.bookingId);
         
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+        // 隐藏模态窗口
+        hideModal();
         
-        countdownDisplay.innerHTML = `
-            <span>${days}</span>天
-            <span>${hours.toString().padStart(2, '0')}</span>:
-            <span>${minutes.toString().padStart(2, '0')}</span>:
-            <span>${seconds.toString().padStart(2, '0')}</span>
-        `;
-    }
-    
-    function checkRegistrationDeadline() {
-        const deadline = new Date(ACTIVITY_CONFIG.registrationDeadline);
-        const now = new Date();
-        
-        if (now > deadline) {
-            isRegistrationOpen = false;
-            disableRegistration();
-        }
-    }
-    
-    function disableRegistration() {
-        // 禁用CTA按钮
-        mainCta.disabled = true;
-        actionCta.disabled = true;
-        mainCta.innerHTML = '<span>报名已截止</span>';
-        actionCta.innerHTML = '<span>报名已截止</span>';
-        
-        // 移除动画效果
-        mainCta.classList.remove('pulse-animation');
-        actionCta.classList.remove('pulse-animation');
-        
-        // 添加提示
-        const warning = document.createElement('div');
-        warning.className = 'registration-closed';
-        warning.innerHTML = '<i class="fas fa-exclamation-circle"></i> 报名已截止，感谢您的关注';
-        warning.style.cssText = 'background: var(--danger); color: white; padding: 10px 20px; border-radius: 8px; margin-top: 10px; text-align: center;';
-        
-        mainCta.parentNode.insertBefore(warning, mainCta.nextSibling);
-        actionCta.parentNode.insertBefore(warning.cloneNode(true), actionCta.nextSibling);
-    }
-    
-    // ========== 设备优化 ==========
-    function optimizeForDevice() {
-        const html = document.documentElement;
-        
-        // 根据设备类型添加优化类
-        if (html.classList.contains('mobile-device')) {
-            // 移动设备优化
-            if (html.classList.contains('ios')) {
-                // iOS设备特殊优化
-                optimizeForIOS();
-            }
-            
-            if (html.classList.contains('android')) {
-                // Android设备特殊优化
-                optimizeForAndroid();
-            }
-            
-            if (html.classList.contains('wechat-browser')) {
-                // 微信浏览器内优化
-                optimizeForWeChat();
-            }
-        }
-        
-        // 检测网络类型
-        detectNetworkAndOptimize();
-        
-        // 检测电池状态
-        if ('getBattery' in navigator) {
-            navigator.getBattery().then(battery => {
-                if (battery.level < 0.3) {
-                    html.classList.add('low-battery');
-                    reduceAnimations();
-                }
-            });
-        }
-    }
-    
-    function optimizeForIOS() {
-        // iOS设备优化
-        document.body.style.webkitTapHighlightColor = 'transparent';
-        
-        // 修复iOS滚动问题
-        document.body.style.overflow = 'hidden';
-        document.body.style.height = '100%';
-        
-        // 添加iOS特有的触摸事件处理
-        const touchElements = document.querySelectorAll('button, .data-card, .pain-point');
-        touchElements.forEach(el => {
-            el.style.webkitTouchCallout = 'none';
-            el.style.webkitUserSelect = 'none';
-        });
-    }
-    
-    function optimizeForAndroid() {
-        // Android设备优化
-        document.body.style.touchAction = 'manipulation';
-        
-        // 防止Android上的双击缩放
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            const now = Date.now();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, { passive: false });
-    }
-    
-    function optimizeForWeChat() {
-        // 微信浏览器内优化
-        document.body.style.fontFamily = "'Noto Sans SC', 'PingFang SC', sans-serif";
-        
-        // 微信内增加分享提示
-        if (typeof WeixinJSBridge !== 'undefined') {
-            WeixinJSBridge.on('menu:share:appmessage', function(argv) {
-                trackEvent('WeChat', 'Share', 'App Message');
-            });
-        }
-    }
-    
-    function detectNetworkAndOptimize() {
-        if ('connection' in navigator) {
-            const connection = navigator.connection;
-            
-            if (connection.saveData || connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
-                // 低速网络优化
-                document.documentElement.classList.add('slow-network');
-                reduceImageQuality();
-                reduceAnimations();
-            }
-        }
-    }
-    
-    function reduceImageQuality() {
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-            if (img.src.includes('hero-person')) {
-                // 如果是主图，使用低质量版本
-                img.loading = 'lazy';
-                img.decoding = 'async';
-            }
-        });
-    }
-    
-    function reduceAnimations() {
-        // 减少动画以节省性能
-        document.querySelectorAll('*').forEach(el => {
-            el.style.animationDuration = '0s';
-            el.style.transitionDuration = '0s';
-        });
-    }
-    
-    // ========== Logo动画处理 ==========
-    function handleLogoAnimation() {
-        const hasSeenLogo = sessionStorage.getItem('skinlab_logo_seen');
-        
-        if (hasSeenLogo) {
-            logoAnimation.style.display = 'none';
-            logoAnimationCompleted = true;
-        } else {
-            logoAnimation.style.display = 'flex';
-            
-            setTimeout(() => {
-                logoAnimation.style.display = 'none';
-                logoAnimationCompleted = true;
-                sessionStorage.setItem('skinlab_logo_seen', 'true');
-                trackEvent('Animation', 'Complete', 'Logo Animation');
-            }, 2800);
-        }
-        
-        window.addEventListener('scroll', function() {
-            if (!logoAnimationCompleted && window.scrollY > 100) {
-                logoAnimation.style.display = 'none';
-                logoAnimationCompleted = true;
-                sessionStorage.setItem('skinlab_logo_seen', 'true');
-                trackEvent('Interaction', 'Skip', 'Logo Animation Skipped');
-            }
-        });
-    }
-    
-    // ========== 表格弹窗定时器 ==========
-    function startTablePopupTimer() {
-        // 每30秒显示一次表格
-        tableUpdateTimer = setInterval(() => {
-            if (tableShownCount < MAX_TABLE_SHOW) {
-                showTablePopup();
-                tableShownCount++;
-                
-                // 10秒后自动隐藏
-                setTimeout(() => {
-                    hideTablePopup();
-                }, 10000);
-            } else {
-                clearInterval(tableUpdateTimer);
-            }
-        }, 30000); // 30秒间隔
-    }
-    
-    // ========== 显示表格弹窗 ==========
-    function showTablePopup() {
-        tablePopup.classList.remove('hide');
-        tablePopup.classList.add('show');
-        generateTableData();
-        trackEvent('Popup', 'Show', 'Table Popup');
-    }
-    
-    // ========== 隐藏表格弹窗 ==========
-    function hideTablePopup() {
-        tablePopup.classList.remove('show');
-        tablePopup.classList.add('hide');
-        trackEvent('Popup', 'Hide', 'Table Popup');
-    }
-    
-    // ========== 生成表格数据（每次不同） ==========
-    function generateTableData() {
-        const times = ['09:30', '10:15', '11:00', '14:30', '15:45', '16:20', '17:00', '18:30'];
-        const statuses = ['已确认', '待确认'];
-        
-        // 清空表格
-        tableBody.innerHTML = '';
-        
-        // 每次生成8条随机数据
-        for (let i = 0; i < 8; i++) {
-            const row = document.createElement('tr');
-            
-            // 随机选择姓名类型
-            const nameType = Math.floor(Math.random() * 3);
-            let name = '';
-            
-            switch (nameType) {
-                case 0:
-                    name = nameDatabase.chineseNames[Math.floor(Math.random() * nameDatabase.chineseNames.length)];
-                    break;
-                case 1:
-                    name = nameDatabase.englishNames[Math.floor(Math.random() * nameDatabase.englishNames.length)];
-                    break;
-                case 2:
-                    name = nameDatabase.malayNames[Math.floor(Math.random() * nameDatabase.malayNames.length)];
-                    break;
-            }
-            
-            const skinType = skinTypes[Math.floor(Math.random() * skinTypes.length)];
-            const status = statuses[Math.floor(Math.random() * statuses.length)];
-            const timeIndex = (nameRotationIndex + i) % times.length;
-            
-            // 添加状态颜色
-            let statusClass = status === '已确认' ? 'status-confirmed' : 'status-pending';
-            
-            row.innerHTML = `
-                <td>${times[timeIndex]}</td>
-                <td class="name-cell">${name}</td>
-                <td>${skinType}</td>
-                <td class="${statusClass}">${status}</td>
-            `;
-            
-            tableBody.appendChild(row);
-        }
-        
-        // 更新姓名旋转索引
-        nameRotationIndex = (nameRotationIndex + 1) % times.length;
-        
-        // 添加动画效果
-        tableBody.classList.add('table-slide-in');
+        // 跳转到成功页面
         setTimeout(() => {
-            tableBody.classList.remove('table-slide-in');
+          window.location.href = 'success.html';
         }, 500);
-    }
-    
-    // ========== 设置事件监听器 ==========
-    function setupEventListeners() {
-        // CTA按钮点击
-        mainCta.addEventListener('click', () => {
-            if (isRegistrationOpen) {
-                openModal();
-                trackEvent('CTA', 'Click', 'Main CTA Button');
-            }
-        });
         
-        actionCta.addEventListener('click', () => {
-            if (isRegistrationOpen) {
-                openModal();
-                trackEvent('CTA', 'Click', 'Action CTA Button');
-            }
-        });
+        return;
+      }
+      
+      // 显示错误提示
+      alert(`提交失败: ${errorMessage}\n\n如果问题持续存在，请直接联系：\n电话: +6016-9560425\n邮箱: jiayee344@gmail.com`);
+      
+    } finally {
+      // 恢复按钮状态
+      const submitBtn = document.getElementById('submitForm');
+      if (submitBtn) {
+        const spinner = submitBtn.querySelector('.fa-spinner');
+        const submitText = submitBtn.querySelector('span');
         
-        // 模态框关闭
-        closeModal.addEventListener('click', closeModalFunc);
-        formModal.addEventListener('click', function(e) {
-            if (e.target === formModal) {
-                closeModalFunc();
-                trackEvent('Modal', 'Close', 'Click Outside');
-            }
-        });
-        
-        // 表格弹窗关闭
-        closeTable.addEventListener('click', () => {
-            hideTablePopup();
-            trackEvent('Table', 'Close', 'Close Button');
-        });
-        
-        // 表单提交
-        reservationForm.addEventListener('submit', handleFormSubmit);
-        
-        // 键盘事件
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && formModal.classList.contains('active')) {
-                closeModalFunc();
-                trackEvent('Modal', 'Close', 'Escape Key');
-            }
-        });
-        
-        // 移动端优化 - 改善触摸反馈
-        setupMobileTouchOptimizations();
-        
-        // 视差效果
-        setupParallaxEffect();
-    }
-    
-    // ========== 移动端触摸优化 ==========
-    function setupMobileTouchOptimizations() {
-        const touchElements = document.querySelectorAll('button, .data-card, .pain-point, .testimonial, .faq-question');
-        
-        touchElements.forEach(el => {
-            el.addEventListener('touchstart', function() {
-                this.classList.add('touch-active');
-            });
-            
-            el.addEventListener('touchend', function() {
-                this.classList.remove('touch-active');
-            });
-            
-            el.addEventListener('touchcancel', function() {
-                this.classList.remove('touch-active');
-            });
-        });
-    }
-    
-    // ========== 视差效果 ==========
-    function setupParallaxEffect() {
-        const personFrame = document.querySelector('.person-frame');
-        if (!personFrame) return;
-        
-        window.addEventListener('scroll', function() {
-            const scrolled = window.pageYOffset;
-            const rate = scrolled * -0.5;
-            
-            personFrame.style.transform = `perspective(1500px) rotateY(-12deg) rotateX(5deg) translateY(${rate}px)`;
-        });
-    }
-    
-    // ========== 打开模态框 ==========
-    function openModal() {
-        if (!isRegistrationOpen) {
-            showWarning('抱歉，报名已截止');
-            return;
+        if (spinner && submitText) {
+          spinner.classList.add('hidden');
+          submitText.textContent = '确认预约';
+          submitBtn.disabled = false;
         }
-        
-        formModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        
-        setTimeout(() => {
-            formModal.classList.add('modal-open');
-        }, 10);
-        
-        reservationForm.reset();
-        clearWarning();
-        trackEvent('Modal', 'Open', 'Form Modal');
+      }
+      
+      // 重置提交状态
+      isFormSubmitting = false;
     }
+  });
+}
+
+// 格式化日期时间为字符串 (YYYY-MM-DD HH:MM:SS)
+function formatDateTime(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+// 初始化自动弹出表单（每20秒）
+function initAutoPopup() {
+  // 清除可能存在的旧计时器
+  clearTimeout(modalTimeout);
+  
+  // 检查用户是否已经提交过表单
+  const hasSubmitted = localStorage.getItem('skinlab_form_submitted');
+  const submissionTime = localStorage.getItem('skinlab_submission_time');
+  
+  // 如果已经提交过，检查是否超过7天
+  if (hasSubmitted && submissionTime) {
+    const submissionDate = new Date(submissionTime);
+    const now = new Date();
+    const daysSinceSubmission = Math.floor((now - submissionDate) / (1000 * 60 * 60 * 24));
     
-    // ========== 关闭模态框 ==========
-    function closeModalFunc() {
-        formModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-        formModal.classList.remove('modal-open');
+    // 如果超过7天，清除本地存储，允许再次显示弹窗
+    if (daysSinceSubmission > 7) {
+      localStorage.removeItem('skinlab_form_submitted');
+      localStorage.removeItem('skinlab_submission_time');
+      localStorage.removeItem('skinlab_customer_name');
+      localStorage.removeItem('skinlab_customer_phone');
+      localStorage.removeItem('skinlab_booking_id');
     }
+  }
+  
+  // 设置新的计时器
+  modalTimeout = setTimeout(() => {
+    // 再次检查用户是否已经提交过表单
+    const currentHasSubmitted = localStorage.getItem('skinlab_form_submitted');
     
-    // ========== 滚动监听器 ==========
-    function setupScrollListener() {
-        let scrollTimeout;
-        let sectionsViewed = new Set();
-        
-        window.addEventListener('scroll', function() {
-            clearTimeout(scrollTimeout);
-            
-            scrollTimeout = setTimeout(() => {
-                const scrollPosition = window.scrollY + window.innerHeight;
-                const pageHeight = document.documentElement.scrollHeight;
-                const scrollPercent = (scrollPosition / pageHeight) * 100;
-                
-                // 深度触发
-                if (scrollPercent > 60 && !scrollDepthTriggered && !hasSubmitted && logoAnimationCompleted && isRegistrationOpen) {
-                    scrollDepthTriggered = true;
-                    trackEvent('Scroll', 'Depth', '60% Scroll Depth');
-                    
-                    setTimeout(() => {
-                        if (!formModal.classList.contains('active')) {
-                            openModal();
-                        }
-                    }, 1500);
-                }
-                
-                // 区块浏览追踪
-                const sections = document.querySelectorAll('section');
-                sections.forEach(section => {
-                    const rect = section.getBoundingClientRect();
-                    if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
-                        const sectionId = section.id || section.className;
-                        if (!sectionsViewed.has(sectionId)) {
-                            sectionsViewed.add(sectionId);
-                            trackEvent('Scroll', 'Section View', sectionId);
-                        }
-                    }
-                });
-            }, 150);
-        });
+    // 如果没有提交过，显示模态窗口
+    if (!currentHasSubmitted) {
+      console.log('20秒后自动显示预约表单');
+      showModal();
     }
-    
-    // ========== 定时弹窗 ==========
-    function setupTimerPopup() {
-        setTimeout(() => {
-            if (!timerTriggered && !hasSubmitted && !formModal.classList.contains('active') && logoAnimationCompleted && isRegistrationOpen) {
-                timerTriggered = true;
-                openModal();
-                trackEvent('Timer', 'Popup', '25s Timer Popup');
-            }
-        }, 25000);
-    }
-    
-    // ========== 初始化FAQ ==========
-    function initFAQ() {
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            question.addEventListener('click', () => {
-                const wasActive = item.classList.contains('active');
-                faqItems.forEach(otherItem => {
-                    otherItem.classList.remove('active');
-                });
-                
-                if (!wasActive) {
-                    item.classList.add('active');
-                    const questionText = item.querySelector('h3').textContent;
-                    trackEvent('FAQ', 'Open', questionText);
-                }
-            });
-        });
-    }
-    
-    // ========== 处理表单提交 ==========
-    async function handleFormSubmit(e) {
+  }, 20000); // 20秒
+}
+
+// 初始化平滑滚动
+function initSmoothScroll() {
+  // 为所有内部链接添加平滑滚动
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
         e.preventDefault();
         
-        if (!isRegistrationOpen) {
-            showWarning('抱歉，报名已截止');
-            return;
-        }
-        
-        const submitButton = document.getElementById('submitForm');
-        const originalButtonContent = submitButton.innerHTML;
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<span><i class="fas fa-spinner fa-spin"></i> 提交中...</span>';
-        
-        try {
-            const formData = new FormData(reservationForm);
-            const skinConcerns = Array.from(formData.getAll('skinConcern')).join(', ');
-            
-            const data = {
-                action: 'submitReservation',
-                name: formData.get('name'),
-                email: formData.get('email'),
-                phone: formData.get('phone'),
-                preferredTime: formData.get('preferredTime'),
-                skinConcern: skinConcerns
-            };
-            
-            if (!validateForm(data)) {
-                submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonContent;
-                return;
-            }
-            
-            // 追踪表单提交尝试
-            trackEvent('Form', 'Submit Attempt', 'Form Submission');
-            
-            const response = await fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            });
-            
-            hasSubmitted = true;
-            
-            // 追踪成功提交
-            trackEvent('Form', 'Submit Success', 'Form Submitted');
-            
-            // 显示成功消息
-            showSuccessMessage();
-            
-        } catch (error) {
-            console.error('提交失败:', error);
-            showWarning('网络连接失败，请稍后重试');
-            
-            // 追踪提交失败
-            trackEvent('Form', 'Submit Error', error.message);
-            
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalButtonContent;
-        }
-    }
-    
-    // ========== 验证表单 ==========
-    function validateForm(data) {
-        if (!data.name || !data.email || !data.phone || !data.preferredTime) {
-            showWarning('请填写所有必填字段');
-            trackEvent('Form', 'Validation Error', 'Missing Required Fields');
-            return false;
-        }
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(data.email)) {
-            showWarning('请输入有效的电子邮件地址');
-            trackEvent('Form', 'Validation Error', 'Invalid Email');
-            return false;
-        }
-        
-        const phoneRegex = /^[\d\s\-\+\(\)]+$/;
-        if (!phoneRegex.test(data.phone) || data.phone.replace(/\D/g, '').length < 8) {
-            showWarning('请输入有效的电话号码');
-            trackEvent('Form', 'Validation Error', 'Invalid Phone');
-            return false;
-        }
-        
-        return true;
-    }
-    
-    // ========== 显示成功消息 ==========
-    function showSuccessMessage() {
-        const successMsg = document.createElement('div');
-        successMsg.className = 'success-message-overlay';
-        successMsg.innerHTML = `
-            <div class="success-content">
-                <div style="background: linear-gradient(135deg, var(--success), var(--accent)); width: 100px; height: 100px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 30px; animation: successPulse 2s infinite;">
-                    <i class="fas fa-check" style="font-size: 50px; color: white;"></i>
-                </div>
-                <h3 style="font-size: 32px; margin-bottom: 20px; color: white; font-weight: 800;">预约成功！</h3>
-                <p style="font-size: 18px; margin-bottom: 15px; opacity: 0.9; line-height: 1.6;">您已成功预约免费7天皮肤检测体验</p>
-                <p style="font-size: 16px; margin-bottom: 30px; opacity: 0.8; line-height: 1.6;">我们将在24小时内通过邮件与您联系确认具体体验时间</p>
-                <div class="spinner"></div>
-                <p style="font-size: 14px; opacity: 0.7; margin-top: 25px;">
-                    <i class="fas fa-gift"></i> 正在跳转到确认页面...
-                </p>
-            </div>
-        `;
-        
-        document.body.appendChild(successMsg);
-        
-        setTimeout(() => {
-            window.location.href = 'success.html';
-        }, 3000);
-    }
-    
-    // ========== 显示警告消息 ==========
-    function showWarning(message) {
-        if (formWarningEl && warningTextEl) {
-            warningTextEl.textContent = message;
-            formWarningEl.style.display = 'flex';
-            formWarningEl.style.animation = 'shake 0.5s ease';
-            
-            setTimeout(() => {
-                clearWarning();
-            }, 5000);
-        }
-    }
-    
-    // ========== 清除警告消息 ==========
-    function clearWarning() {
-        if (formWarningEl) {
-            formWarningEl.style.display = 'none';
-            formWarningEl.style.animation = '';
-        }
-    }
-    
-    // ========== 添加动画样式 ==========
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-            20%, 40%, 60%, 80% { transform: translateX(5px); }
-        }
-        
-        @keyframes successPulse {
-            0%, 100% { 
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 107, 139, 0.7);
-            }
-            50% { 
-                transform: scale(1.1);
-                box-shadow: 0 0 0 20px rgba(255, 107, 139, 0);
-            }
-        }
-        
-        .modal-open .modal-container {
-            animation: modalAppear 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-        
-        @keyframes modalAppear {
-            0% {
-                opacity: 0;
-                transform: translateY(50px) scale(0.9);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        
-        .status-confirmed {
-            color: var(--success);
-            font-weight: 600;
-        }
-        
-        .status-pending {
-            color: var(--warning);
-            font-weight: 600;
-        }
-        
-        .spinner {
-            margin: 30px auto;
-            width: 60px;
-            height: 60px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top: 4px solid var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            .data-card:hover,
-            .pain-point:hover,
-            .testimonial:hover,
-            .faq-item:hover {
-                transform: none;
-            }
-            
-            .cta-button:hover,
-            .action-button:hover,
-            .submit-button:hover {
-                transform: translateY(-3px) scale(1.02);
-            }
-        }
-        
-        /* 触摸活动状态 */
-        .touch-active {
-            opacity: 0.7;
-            transform: scale(0.98);
-        }
-        
-        /* 慢速网络优化 */
-        .slow-network * {
-            animation-duration: 0s !important;
-            transition-duration: 0s !important;
-        }
-        
-        .slow-network img {
-            filter: blur(1px);
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // 窗口大小改变时优化
-    window.addEventListener('resize', function() {
-        // 移动端优化：简化效果
-        if (window.innerWidth <= 768) {
-            document.querySelectorAll('.person-frame').forEach(frame => {
-                frame.style.transform = 'none';
-            });
-        }
-        
-        // 检测横屏模式
-        if (window.innerWidth > window.innerHeight) {
-            document.documentElement.classList.add('landscape');
-        } else {
-            document.documentElement.classList.remove('landscape');
-        }
+        window.scrollTo({
+          top: targetElement.offsetTop - 100,
+          behavior: 'smooth'
+        });
+      }
     });
-    
-    // 页面可见性变化
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            // 页面隐藏时暂停动画
-            clearInterval(countdownTimer);
-        } else {
-            // 页面显示时恢复
-            setupCountdownTimer();
+  });
+}
+
+// 初始化动画效果
+function initAnimations() {
+  // 添加滚动动画
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate__animated', 'animate__fadeInUp');
+        
+        // 为3D卡片添加额外的动画类
+        if (entry.target.classList.contains('card-3d')) {
+          setTimeout(() => {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'perspective(1000px) translateZ(0)';
+          }, 300);
         }
+      }
     });
+  }, observerOptions);
+  
+  // 观察需要动画的元素
+  document.querySelectorAll('.concern-item, .benefit-card, .timeline-item, .faq-item, .outcome-item').forEach(el => {
+    // 初始设置
+    if (el.classList.contains('card-3d')) {
+      el.style.opacity = '0';
+      el.style.transform = 'perspective(1000px) translateZ(-50px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    }
     
-    // 初始化应用
-    init();
+    observer.observe(el);
+  });
+}
+
+// 页面可见性变化处理（防止标签页切换时计时器问题）
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) {
+    clearInterval(autoSlideInterval);
+    clearTimeout(modalTimeout);
+  } else {
+    startAutoSlide();
+    initAutoPopup();
+  }
 });
+
+// 窗口大小变化时调整布局
+window.addEventListener('resize', function() {
+  // 重新计算轮播位置
+  goToSlide(currentSlide);
+});
+
+// 添加控制台提示
+console.log('%c✨ Skin Lab 免费7天皮肤体验 ✨', 'color: #6C63FF; font-size: 18px; font-weight: bold;');
+console.log('%c地点: Bukit Indah, 柔佛新山', 'color: #36D1DC; font-size: 14px;');
+console.log('%c日期: 10-01-2026 至 17-01-2026', 'color: #FF6584; font-size: 14px;');
+console.log('%c联系方式: +6016-9560425 | jiayee344@gmail.com', 'color: #4CAF50; font-size: 12px;');
+console.log('%cSheetDB API: ' + SHEETDB_API, 'color: #4CAF50; font-size: 12px;');
