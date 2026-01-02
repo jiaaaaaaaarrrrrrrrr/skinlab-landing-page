@@ -10,6 +10,68 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  
+  <!-- Google Analytics (GA4) - 使用你的跟踪ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G7N39Y8M2D"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    
+    // 配置GA4属性ID - 使用你的实际ID
+    gtag('config', 'G-G7N39Y8M2D');
+    
+    // 跟踪预约表单提交事件
+    function trackFormSubmission(formType, data = {}) {
+      gtag('event', 'form_submit', {
+        'event_category': '预约',
+        'event_label': formType,
+        'value': 1,
+        'form_data': JSON.stringify(data)
+      });
+      console.log('已跟踪表单提交事件:', formType, data);
+    }
+    
+    // 跟踪按钮点击事件
+    function trackButtonClick(buttonName, location = 'unknown') {
+      gtag('event', 'button_click', {
+        'event_category': '互动',
+        'event_label': buttonName,
+        'value': 1,
+        'location': location
+      });
+      console.log('已跟踪按钮点击:', buttonName, '位置:', location);
+    }
+    
+    // 跟踪页面浏览
+    function trackPageView(pageTitle) {
+      gtag('event', 'page_view', {
+        'page_title': pageTitle,
+        'page_location': window.location.href
+      });
+      console.log('已跟踪页面浏览:', pageTitle);
+    }
+    
+    // 跟踪轮播器互动
+    function trackCarouselInteraction(action, slideNumber) {
+      gtag('event', 'carousel_interaction', {
+        'event_category': '轮播器',
+        'event_label': action,
+        'value': slideNumber
+      });
+      console.log('已跟踪轮播器互动:', action, '幻灯片:', slideNumber);
+    }
+    
+    // 跟踪FAQ展开/收起
+    function trackFAQInteraction(question, action) {
+      gtag('event', 'faq_interaction', {
+        'event_category': '常见问题',
+        'event_label': question,
+        'value': action === 'open' ? 1 : 0
+      });
+      console.log('已跟踪FAQ互动:', question, '动作:', action);
+    }
+  </script>
 </head>
 <body>
   <!-- 品牌启动页面 -->
