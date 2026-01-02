@@ -851,6 +851,25 @@ function initAnimations() {
       heroTitle.classList.add('typewriter');
     }, 500);
   }
+  
+  // 移动端优化：防止动画卡顿
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+    // 在移动设备上减少粒子数量
+    if (particlesSystem) {
+      particlesSystem.particleCount = 20;
+    }
+    
+    // 禁用部分复杂动画
+    document.querySelectorAll('.bg-3d-elements').forEach(el => {
+      el.style.display = 'none';
+    });
+    
+    // 简化3D效果
+    document.querySelectorAll('.card-3d, .btn-3d, .icon-3d').forEach(el => {
+      el.style.transform = 'none';
+      el.style.transition = 'none';
+    });
+  }
 }
 
 // 页面可见性变化处理
@@ -867,6 +886,60 @@ document.addEventListener('visibilitychange', function() {
 // 窗口大小变化时调整布局
 window.addEventListener('resize', function() {
   goToSlide(currentSlide);
+  
+  // 移动端优化：重新调整字体大小
+  if (window.innerWidth <= 768) {
+    adjustMobileFontSizes();
+  }
+});
+
+// 移动端字体大小调整函数
+function adjustMobileFontSizes() {
+  const viewportWidth = window.innerWidth;
+  
+  // 根据屏幕宽度动态调整字体大小
+  if (viewportWidth <= 480) {
+    // 小手机屏幕
+    document.querySelectorAll('.hero-title, .hero-title-2').forEach(el => {
+      el.style.fontSize = '24px';
+    });
+    
+    document.querySelectorAll('.section-header h2').forEach(el => {
+      el.style.fontSize = '20px';
+    });
+    
+    document.querySelectorAll('.benefit-card h3, .concern-item h3, .timeline-content h3').forEach(el => {
+      el.style.fontSize = '16px';
+    });
+    
+    document.querySelectorAll('.benefit-card p, .concern-item p, .timeline-content p').forEach(el => {
+      el.style.fontSize = '12px';
+    });
+  } else if (viewportWidth <= 768) {
+    // 大手机/小平板屏幕
+    document.querySelectorAll('.hero-title, .hero-title-2').forEach(el => {
+      el.style.fontSize = '28px';
+    });
+    
+    document.querySelectorAll('.section-header h2').forEach(el => {
+      el.style.fontSize = '24px';
+    });
+    
+    document.querySelectorAll('.benefit-card h3, .concern-item h3, .timeline-content h3').forEach(el => {
+      el.style.fontSize = '18px';
+    });
+    
+    document.querySelectorAll('.benefit-card p, .concern-item p, .timeline-content p').forEach(el => {
+      el.style.fontSize = '14px';
+    });
+  }
+}
+
+// 页面加载完成后执行移动端优化
+window.addEventListener('load', function() {
+  if (window.innerWidth <= 768) {
+    adjustMobileFontSizes();
+  }
 });
 
 // 添加控制台提示
@@ -875,3 +948,4 @@ console.log('%c地点: Bukit Indah, 柔佛新山', 'color: #36D1DC; font-size: 1
 console.log('%c日期: 10-01-2026 至 17-01-2026', 'color: #FF6584; font-size: 14px;');
 console.log('%c联系方式: +6016-9560425 | jiayee344@gmail.com', 'color: #4CAF50; font-size: 12px;');
 console.log('%cSheetDB API: ' + SHEETDB_API, 'color: #4CAF50; font-size: 12px;');
+console.log('%c移动端优化已启用', 'color: #FF9800; font-size: 12px;');
