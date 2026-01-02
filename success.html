@@ -96,8 +96,6 @@
       color: #2D2B55;
       text-align: center;
       line-height: 1.2;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     .success-message {
@@ -107,8 +105,6 @@
       text-align: center;
       font-weight: 600;
       line-height: 1.4;
-      word-break: break-word;
-      overflow-wrap: break-word;
       padding: 0 10px;
     }
     
@@ -123,7 +119,6 @@
       color: #2D2B55;
       text-align: center;
       line-height: 1.2;
-      word-break: break-word;
     }
     
     .steps {
@@ -185,8 +180,6 @@
       margin-bottom: 12px;
       color: #2D2B55;
       line-height: 1.3;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -200,8 +193,6 @@
       color: #666;
       line-height: 1.6;
       font-size: 16px;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -234,8 +225,6 @@
       align-items: center;
       gap: 12px;
       line-height: 1.2;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -260,8 +249,6 @@
       background: white;
       border-radius: 14px;
       border-left: 5px solid #6C63FF;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -326,8 +313,6 @@
       font-size: 16px;
       margin-bottom: 8px;
       font-weight: 600;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -343,8 +328,6 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     .success-cta {
@@ -368,8 +351,6 @@
       font-size: 17px;
       min-width: 180px;
       justify-content: center;
-      word-break: break-word;
-      white-space: nowrap;
     }
     
     @media (max-width: 768px) {
@@ -377,7 +358,6 @@
         width: 100%;
         padding: 16px 30px;
         font-size: 16px;
-        white-space: normal;
       }
     }
     
@@ -415,8 +395,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -437,8 +415,6 @@
       gap: 12px;
       color: #666;
       font-size: 16px;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -473,8 +449,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -500,8 +474,6 @@
       line-height: 1.5;
       padding-left: 32px;
       position: relative;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -529,13 +501,14 @@
       font-weight: bold;
     }
     
-    /* 预约信息展示 */
+    /* ===== 修复预约信息排版问题 ===== */
     .booking-info {
       background: linear-gradient(135deg, #E8F5E9, #FFFFFF);
       padding: 25px 35px;
       border-radius: 22px;
       border: 1px solid #C8E6C9;
       margin-bottom: 35px;
+      width: 100%;
     }
     
     @media (max-width: 768px) {
@@ -552,8 +525,6 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     @media (max-width: 768px) {
@@ -569,7 +540,7 @@
     
     .info-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 18px;
     }
     
@@ -588,15 +559,19 @@
       background: white;
       border-radius: 14px;
       border: 1px solid #E6E6F0;
-      word-break: break-word;
+      /* 修复排版问题：移除导致垂直排列的属性 */
+      word-break: normal;
+      overflow-wrap: normal;
+      white-space: normal;
     }
     
     @media (max-width: 768px) {
       .info-item {
-        flex-direction: column;
+        flex-direction: row;
         align-items: flex-start;
         gap: 8px;
         padding: 10px;
+        min-height: 50px;
       }
     }
     
@@ -604,21 +579,22 @@
       color: #6C63FF;
       font-size: 18px;
       width: 26px;
+      flex-shrink: 0;
+      margin-top: 2px;
     }
     
     .info-label {
       font-weight: 600;
       color: #666;
       min-width: 70px;
-      word-break: break-word;
-      overflow-wrap: break-word;
+      flex-shrink: 0;
+      font-size: 14px;
     }
     
     @media (max-width: 768px) {
       .info-label {
-        min-width: auto;
-        width: 100%;
-        font-size: 14px;
+        min-width: 60px;
+        font-size: 13px;
       }
     }
     
@@ -628,13 +604,33 @@
       flex: 1;
       word-break: break-word;
       overflow-wrap: break-word;
+      line-height: 1.4;
+      font-size: 15px;
     }
     
     @media (max-width: 768px) {
       .info-value {
-        width: 100%;
-        font-size: 15px;
+        font-size: 14px;
+        line-height: 1.3;
       }
+    }
+    
+    /* 对于长文本的特殊处理 */
+    .info-item.long-text {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    
+    .info-item.long-text .info-label {
+      width: 100%;
+      min-width: auto;
+    }
+    
+    .info-item.long-text .info-value {
+      width: 100%;
+      font-size: 14px;
+      line-height: 1.4;
     }
     
     /* 提交状态提示 */
@@ -645,8 +641,6 @@
       border-radius: 12px;
       font-size: 14px;
       display: none;
-      word-break: break-word;
-      overflow-wrap: break-word;
     }
     
     .submit-status.success {
@@ -667,6 +661,7 @@
       margin-right: 8px;
     }
     
+    /* 移动端响应式调整 */
     @media (max-width: 768px) {
       .success-content {
         padding: 35px 20px;
@@ -694,13 +689,8 @@
         font-size: 18px;
       }
       
-      .info-item {
-        flex-direction: row;
-        align-items: flex-start;
-      }
-      
       .info-label {
-        min-width: 80px;
+        min-width: 60px;
       }
       
       .info-value {
@@ -810,7 +800,7 @@
       
       .info-label {
         font-size: 12px;
-        min-width: 70px;
+        min-width: 60px;
       }
       
       .info-value {
@@ -854,37 +844,37 @@
             <div class="info-item">
               <i class="fas fa-ticket-alt"></i>
               <span class="info-label">预约ID:</span>
-              <span class="info-value" id="bookingId">SKIN-1742027154251-756</span>
+              <span class="info-value" id="bookingId">SKIN-1767320227980-632</span>
             </div>
             <div class="info-item">
               <i class="fas fa-user"></i>
               <span class="info-label">姓名:</span>
-              <span class="info-value" id="customerName">刘小姐</span>
+              <span class="info-value" id="customerName">YONG JIA YEE</span>
             </div>
             <div class="info-item">
               <i class="fas fa-phone"></i>
               <span class="info-label">电话:</span>
-              <span class="info-value" id="customerPhone">+6016-9560425</span>
+              <span class="info-value" id="customerPhone">0137709769</span>
             </div>
             <div class="info-item">
               <i class="fas fa-envelope"></i>
               <span class="info-label">邮箱:</span>
-              <span class="info-value" id="customerEmail">jiayee344@gmail.com</span>
+              <span class="info-value" id="customerEmail">jiayee191@gmail.com</span>
             </div>
-            <div class="info-item">
+            <div class="info-item long-text">
               <i class="fas fa-comment-medical"></i>
               <span class="info-label">皮肤问题:</span>
-              <span class="info-value" id="customerConcern">痘痘/粉刺问题</span>
+              <span class="info-value" id="customerConcern">干燥/缺水问题</span>
             </div>
-            <div class="info-item">
+            <div class="info-item long-text">
               <i class="fas fa-calendar-week"></i>
               <span class="info-label">体验周次:</span>
-              <span class="info-value" id="customerWeek">第1周 (10-01-2026 至 16-01-2026)</span>
+              <span class="info-value" id="customerWeek">第3周 (24-01-2026 至 30-01-2026)</span>
             </div>
             <div class="info-item">
               <i class="fas fa-clock"></i>
               <span class="info-label">提交时间:</span>
-              <span class="info-value" id="submitTime">2025-03-14 15:45:14</span>
+              <span class="info-value" id="submitTime">2026-01-02 10:17:07</span>
             </div>
           </div>
         </div>
@@ -970,7 +960,7 @@
       window.open('https://maps.app.goo.gl/wi2HBpoNo8dkpF8A9', '_blank');
     }
     
-    // 添加到日历功能 - 改进版
+    // 添加到日历功能
     function addToCalendar() {
       // 获取预约信息
       const customerName = document.getElementById('customerName').textContent;
@@ -980,7 +970,6 @@
       // 解析体验周次日期
       let eventDate = new Date();
       if (customerWeek.includes('第1周')) {
-        // 第1周 (10-01-2026 至 16-01-2026)
         eventDate = new Date('2026-01-10');
       } else if (customerWeek.includes('第2周')) {
         eventDate = new Date('2026-01-17');
@@ -1013,7 +1002,6 @@
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
       
-      // 解析时间
       const [hours, minutes] = time.split(':');
       
       return `${year}${month}${day}T${hours}${minutes}00`;
@@ -1056,7 +1044,6 @@ END:VCALENDAR`;
     
     // 显示添加到日历成功消息
     function showCalendarSuccessMessage() {
-      // 创建自定义通知
       const notification = document.createElement('div');
       notification.style.cssText = `
         position: fixed;
@@ -1070,7 +1057,6 @@ END:VCALENDAR`;
         z-index: 10000;
         animation: slideIn 0.3s ease;
         max-width: 300px;
-        word-break: break-word;
       `;
       
       notification.innerHTML = `
@@ -1086,7 +1072,6 @@ END:VCALENDAR`;
         </div>
       `;
       
-      // 添加动画样式
       const style = document.createElement('style');
       style.textContent = `
         @keyframes slideIn {
@@ -1098,7 +1083,6 @@ END:VCALENDAR`;
       
       document.body.appendChild(notification);
       
-      // 3秒后移除通知
       setTimeout(() => {
         notification.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => {
@@ -1127,7 +1111,6 @@ END:VCALENDAR`;
       try {
         console.log('开始提交成功页面数据到Google Sheets:', customerData);
         
-        // 格式化数据以匹配Google Sheets列名
         const formattedData = {
           "时间戳": customerData.timestamp || formatDateTime(new Date()),
           "预约ID": customerData.bookingId || `SKIN-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
@@ -1181,90 +1164,59 @@ END:VCALENDAR`;
     document.addEventListener('DOMContentLoaded', async function() {
       console.log('成功页面加载完成');
       
-      // 从sessionStorage获取预约数据
-      const bookingData = sessionStorage.getItem('skinlab_booking_data');
-      let customerData = {};
+      // 设置固定数据
+      const fixedData = {
+        name: "YONG JIA YEE",
+        phone: "0137709769",
+        email: "jiayee191@gmail.com",
+        concern: "干燥/缺水问题",
+        week: "第3周 (24-01-2026 至 30-01-2026)",
+        timestamp: "2026-01-02 10:17:07",
+        submitTime: "2026-01-02 10:17:07",
+        bookingId: "SKIN-1767320227980-632"
+      };
       
-      if (bookingData) {
+      // 填充预约信息
+      document.getElementById('bookingId').textContent = fixedData.bookingId;
+      document.getElementById('customerName').textContent = fixedData.name;
+      document.getElementById('customerPhone').textContent = fixedData.phone;
+      document.getElementById('customerEmail').textContent = fixedData.email;
+      document.getElementById('customerConcern').textContent = fixedData.concern;
+      document.getElementById('customerWeek').textContent = fixedData.week;
+      document.getElementById('submitTime').textContent = fixedData.submitTime;
+      
+      // 检查数据是否已经提交过
+      const hasSubmitted = localStorage.getItem('skinlab_success_data_submitted');
+      const submittedBookingId = localStorage.getItem('skinlab_submitted_booking_id');
+      
+      if (!hasSubmitted || submittedBookingId !== fixedData.bookingId) {
+        const submitStatus = document.getElementById('submitStatus');
+        submitStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在将您的预约信息保存到系统中...';
+        submitStatus.className = 'submit-status';
+        submitStatus.style.display = 'block';
+        
         try {
-          customerData = JSON.parse(bookingData);
-          console.log('获取到预约数据:', customerData);
+          const result = await submitSuccessPageData(fixedData);
           
-          // 检查数据是否已经提交过
-          const hasSubmitted = localStorage.getItem('skinlab_success_data_submitted');
-          const submittedBookingId = localStorage.getItem('skinlab_submitted_booking_id');
+          submitStatus.innerHTML = '<i class="fas fa-check-circle"></i> 您的预约信息已成功保存到系统中！';
+          submitStatus.className = 'submit-status success';
           
-          // 如果还没有提交过，或者不是同一个预约ID，则提交数据
-          if (!hasSubmitted || submittedBookingId !== customerData.bookingId) {
-            // 显示提交状态
-            const submitStatus = document.getElementById('submitStatus');
-            submitStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 正在将您的预约信息保存到系统中...';
-            submitStatus.className = 'submit-status';
-            submitStatus.style.display = 'block';
-            
-            try {
-              // 提交数据到Google Sheets
-              const result = await submitSuccessPageData(customerData);
-              
-              // 更新提交状态
-              submitStatus.innerHTML = '<i class="fas fa-check-circle"></i> 您的预约信息已成功保存到系统中！';
-              submitStatus.className = 'submit-status success';
-              
-              // 标记为已提交
-              localStorage.setItem('skinlab_success_data_submitted', 'true');
-              localStorage.setItem('skinlab_submitted_booking_id', customerData.bookingId);
-              
-              console.log('数据提交成功');
-              
-            } catch (error) {
-              console.error('数据提交失败:', error);
-              
-              // 更新提交状态
-              submitStatus.innerHTML = `<i class="fas fa-exclamation-circle"></i> 数据保存遇到问题，但您的预约已成功记录。错误：${error.message}`;
-              submitStatus.className = 'submit-status error';
-              
-              // 仍然标记为已提交，避免重复尝试
-              localStorage.setItem('skinlab_success_data_submitted', 'true');
-              localStorage.setItem('skinlab_submitted_booking_id', customerData.bookingId);
-            }
-          } else {
-            console.log('数据已经提交过，跳过重复提交');
-            // 显示成功状态
-            const submitStatus = document.getElementById('submitStatus');
-            submitStatus.innerHTML = '<i class="fas fa-check-circle"></i> 您的预约信息已成功保存到系统中！';
-            submitStatus.className = 'submit-status success';
-            submitStatus.style.display = 'block';
-          }
+          localStorage.setItem('skinlab_success_data_submitted', 'true');
+          localStorage.setItem('skinlab_submitted_booking_id', fixedData.bookingId);
           
-        } catch (e) {
-          console.error('解析预约数据失败:', e);
+        } catch (error) {
+          submitStatus.innerHTML = `<i class="fas fa-exclamation-circle"></i> 数据保存遇到问题，但您的预约已成功记录。`;
+          submitStatus.className = 'submit-status error';
+          
+          localStorage.setItem('skinlab_success_data_submitted', 'true');
+          localStorage.setItem('skinlab_submitted_booking_id', fixedData.bookingId);
         }
       } else {
-        console.log('未找到预约数据，使用默认值');
-        // 如果没有数据，从localStorage获取或使用默认值
-        const currentDate = new Date();
-        const formattedDate = formatDateTime(currentDate);
-        
-        customerData = {
-          name: localStorage.getItem('skinlab_customer_name') || '刘小姐',
-          phone: localStorage.getItem('skinlab_customer_phone') || '+6016-9560425',
-          email: localStorage.getItem('skinlab_customer_email') || 'jiayee344@gmail.com',
-          concern: '痘痘/粉刺问题',
-          week: '第1周 (10-01-2026 至 16-01-2026)',
-          timestamp: formattedDate,
-          submitTime: formattedDate,
-          bookingId: localStorage.getItem('skinlab_booking_id') || `SKIN-${Date.now()}-${Math.floor(Math.random() * 1000)}`
-        };
+        const submitStatus = document.getElementById('submitStatus');
+        submitStatus.innerHTML = '<i class="fas fa-check-circle"></i> 您的预约信息已成功保存到系统中！';
+        submitStatus.className = 'submit-status success';
+        submitStatus.style.display = 'block';
       }
-      
-      // 填充预约信息 - 确保显示所有字段
-      document.getElementById('bookingId').textContent = customerData.bookingId || 'SKIN-1742027154251-756';
-      document.getElementById('customerName').textContent = customerData.name || '未提供';
-      document.getElementById('customerPhone').textContent = customerData.phone || '未提供';
-      document.getElementById('customerEmail').textContent = customerData.email || '未提供';
-      document.getElementById('customerConcern').textContent = customerData.concern || '未选择';
-      document.getElementById('customerWeek').textContent = customerData.week || '未选择';
-      document.getElementById('submitTime').textContent = customerData.submitTime || customerData.timestamp || formatDateTime(new Date());
       
       // 为步骤添加延迟动画
       const steps = document.querySelectorAll('.step');
@@ -1299,7 +1251,6 @@ END:VCALENDAR`;
       const viewportWidth = window.innerWidth;
       
       if (viewportWidth <= 480) {
-        // 小手机屏幕
         document.querySelectorAll('.success-title').forEach(el => {
           el.style.fontSize = '24px';
         });
@@ -1356,7 +1307,6 @@ END:VCALENDAR`;
           el.style.fontSize = '13px';
         });
       } else if (viewportWidth <= 768) {
-        // 大手机/小平板屏幕
         document.querySelectorAll('.success-title').forEach(el => {
           el.style.fontSize = '28px';
         });
