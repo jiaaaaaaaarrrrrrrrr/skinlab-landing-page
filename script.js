@@ -1,56 +1,236 @@
 // 全局变量
 let currentSlide = 0;
+let currentCarouselSlide = 0;
 let autoSlideInterval;
+let carouselAutoSlideInterval;
 let modalTimeout;
 let isFormSubmitting = false;
 let particlesSystem;
+let totalCarouselSlides = 5; // 实际图片数量
 
 // SheetDB.io API 配置 - 修复数据字段
 const SHEETDB_API = 'https://sheetdb.io/api/v1/rm6iajzbhgnlv';
 
-// 测试数据 - 顾客评价
-const testimonials = [
-  {
-    name: "林美玲",
-    age: "28岁",
-    avatar: "https://randomuser.me/api/portraits/women/32.jpg",
-    rating: 5,
-    text: "终于知道为什么我的皮肤总是敏感了！7天体验帮我找到了根源，现在护肤不再盲目跟风。顾问非常专业，仪器检测数据很详细。",
-    date: "2025-11-15"
-  },
-  {
-    name: "陈晓雯",
-    age: "32岁",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    rating: 5,
-    text: "原本以为又是推销，但真的完全没有！顾问很专业，分析得很详细，让我真正了解自己的皮肤。现在知道该买什么产品了。",
-    date: "2025-11-22"
-  },
-  {
-    name: "张婷婷",
-    age: "25岁",
-    avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-    rating: 4,
-    text: "痘痘问题困扰多年，这里帮我找到了适合的护理方式。7天后皮肤明显稳定多了！非常感谢专业的指导。",
-    date: "2025-12-03"
-  },
-  {
-    name: "王佳欣",
-    age: "35岁",
-    avatar: "https://randomuser.me/api/portraits/women/65.jpg",
-    rating: 5,
-    text: "作为护肤新手，这次体验太有价值了！知道自己该买什么，不该买什么，省了不少冤枉钱。非常推荐给大家！",
-    date: "2025-12-10"
-  },
-  {
-    name: "刘思雅",
-    age: "30岁",
-    avatar: "https://randomuser.me/api/portraits/women/26.jpg",
-    rating: 5,
-    text: "仪器检测很专业，数据直观。顾问根据报告给出个性化建议，非常实用！现在皮肤状态好了很多。",
-    date: "2025-12-18"
+// DOM 加载完成后初始化
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('页面加载完成，开始初始化...');
+  
+  // 显示品牌启动页面
+  showBrandLoader();
+  
+  // 2秒后隐藏启动页面并初始化
+  setTimeout(() => {
+    hideBrandLoader();
+    initAllComponents();
+  }, 2000);
+});
+
+// 显示品牌启动页面
+function showBrandLoader() {
+  const brandLoader = document.getElementById('brandLoader');
+  if (brandLoader) {
+    brandLoader.style.display = 'flex';
+    // 确保Logo在上方显示
+    const brandContainer = brandLoader.querySelector('.brand-container');
+    if (brandContainer) {
+      brandContainer.style.display = 'flex';
+      brandContainer.style.flexDirection = 'column';
+      brandContainer.style.alignItems = 'center';
+      brandContainer.style.justifyContent = 'center';
+    }
   }
-];
+}
+
+// 隐藏品牌启动页面并显示主内容
+function hideBrandLoader() {
+  const brandLoader = document.getElementById('brandLoader');
+  const mainContent = document.getElementById('mainContent');
+  
+  if (brandLoader) {
+    brandLoader.classList.add('fade-out');
+  }
+  
+  setTimeout(() => {
+    if (brandLoader) {
+      brandLoader.style.display = 'none';
+    }
+    
+    if (mainContent) {
+      mainContent.classList.add('loaded');
+    }
+    
+    // 初始化粒子系统
+    particlesSystem = new ParticlesSystem();
+    
+    // 初始化滚动动画
+    initScrollAnimations();
+    
+    // 初始化光标效果
+    initCursorEffect();
+    
+    console.log('主内容加载完成！');
+  }, 800);
+}
+
+// 初始化所有组件
+function initAllComponents() {
+  initCarousel();
+  initFAQ();
+  initModal();
+  initFormSubmission();
+  initAutoPopup();
+  initSmoothScroll();
+  initAnimations();
+  
+  // 为所有CTA按钮添加事件监听
+  const ctaButtons = [
+    document.getElementById('heroBtn'),
+    document.getElementById('actionBtn'),
+    document.getElementById('conclusionBtn'),
+    document.getElementById('footerBtn'),
+    document.getElementById('floatingBtn')
+  ];
+  
+  ctaButtons.forEach(button => {
+    if (button) {
+      button.addEventListener('click', showModal);
+    }
+  });
+  
+  console.log('所有组件初始化完成！');
+}
+
+// 初始化顾客分享图片轮播器 - 优化版
+function initCarousel() {
+  const carouselTrack = document.getElementById('carouselTrack');
+  const carouselPrev = document.getElementById('carouselPrev');
+  const carouselNext = document.getElementById('carouselNext');
+  const carouselIndicators = document.getElementById('carouselIndicators');
+  
+  if (!carouselTrack || !carouselPrev || !carouselNext) {
+    console.error('未找到轮播器元素');
+    return;
+  }
+  
+  // 生成指示器
+  for (let i = 0; i < totalCarouselSlides; i++) {
+    const indicator = document.createElement('div');
+    indicator.className = 'carousel-indicator';
+    indicator.dataset.index = i;
+    indicator.addEventListener('click', () => goToCarouselSlide(i));
+    carouselIndicators.appendChild(indicator);
+  }
+  
+  // 设置初始指示器状态
+  updateCarouselIndicators();
+  
+  // 绑定按钮事件
+  carouselPrev.addEventListener('click', () => goToCarouselSlide(currentCarouselSlide - 1));
+  carouselNext.addEventListener('click', () => goToCarouselSlide(currentCarouselSlide + 1));
+  
+  // 启动自动轮播
+  startCarouselAutoSlide();
+  
+  // 鼠标悬停时暂停自动轮播
+  carouselTrack.addEventListener('mouseenter', () => {
+    clearInterval(carouselAutoSlideInterval);
+  });
+  
+  carouselTrack.addEventListener('mouseleave', () => {
+    startCarouselAutoSlide();
+  });
+  
+  // 触摸滑动支持
+  let touchStartX = 0;
+  let touchEndX = 0;
+  
+  carouselTrack.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  
+  carouselTrack.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleCarouselSwipe();
+  });
+  
+  function handleCarouselSwipe() {
+    const swipeThreshold = 50;
+    const difference = touchStartX - touchEndX;
+    
+    if (Math.abs(difference) > swipeThreshold) {
+      if (difference > 0) {
+        // 向左滑动 - 下一张
+        goToCarouselSlide(currentCarouselSlide + 1);
+      } else {
+        // 向右滑动 - 上一张
+        goToCarouselSlide(currentCarouselSlide - 1);
+      }
+    }
+  }
+  
+  // 窗口大小变化时重新调整轮播器
+  window.addEventListener('resize', () => {
+    goToCarouselSlide(currentCarouselSlide);
+  });
+  
+  console.log('顾客分享轮播器初始化完成');
+}
+
+// 切换到指定轮播图片 - 优化版
+function goToCarouselSlide(index) {
+  const carouselTrack = document.getElementById('carouselTrack');
+  const slides = document.querySelectorAll('.carousel-slide');
+  
+  // 处理边界情况
+  if (index >= totalCarouselSlides) {
+    index = 0;
+  } else if (index < 0) {
+    index = totalCarouselSlides - 1;
+  }
+  
+  currentCarouselSlide = index;
+  
+  // 根据屏幕宽度计算每屏显示的图片数量和偏移量
+  let slidesPerView, offset;
+  const screenWidth = window.innerWidth;
+  
+  if (screenWidth >= 1200) {
+    slidesPerView = 5; // 大屏幕显示5张
+    offset = -index * 20; // 每张占20%
+  } else if (screenWidth >= 992) {
+    slidesPerView = 3; // 中等屏幕显示3张
+    offset = -index * (100 / 3); // 每张占33.333%
+  } else if (screenWidth >= 768) {
+    slidesPerView = 2; // 平板显示2张
+    offset = -index * 50; // 每张占50%
+  } else {
+    slidesPerView = 1; // 手机显示1张
+    offset = -index * 100; // 每张占100%
+  }
+  
+  carouselTrack.style.transform = `translateX(${offset}%)`;
+  
+  // 更新指示器
+  updateCarouselIndicators();
+  
+  console.log(`切换到轮播图片 ${index + 1}/${totalCarouselSlides}, 每屏显示 ${slidesPerView} 张`);
+}
+
+// 更新轮播指示器
+function updateCarouselIndicators() {
+  const indicators = document.querySelectorAll('.carousel-indicator');
+  indicators.forEach((indicator, index) => {
+    indicator.classList.toggle('active', index === currentCarouselSlide);
+  });
+}
+
+// 开始自动轮播
+function startCarouselAutoSlide() {
+  clearInterval(carouselAutoSlideInterval);
+  carouselAutoSlideInterval = setInterval(() => {
+    goToCarouselSlide(currentCarouselSlide + 1);
+  }, 4000); // 每4秒自动切换
+}
 
 // 粒子系统
 class ParticlesSystem {
@@ -66,6 +246,7 @@ class ParticlesSystem {
       'rgba(46, 204, 113, 0.5)'
     ];
     
+
     if (this.container) {
       this.init();
     }
@@ -346,175 +527,6 @@ class DataHandler {
       this.isSubmitting = false;
     }
   }
-}
-
-// DOM 加载完成后初始化
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('页面加载完成，开始初始化...');
-  
-  // 显示品牌启动页面
-  showBrandLoader();
-  
-  // 2秒后隐藏启动页面并初始化
-  setTimeout(() => {
-    hideBrandLoader();
-    initAllComponents();
-  }, 2000);
-});
-
-// 显示品牌启动页面
-function showBrandLoader() {
-  const brandLoader = document.getElementById('brandLoader');
-  if (brandLoader) {
-    brandLoader.style.display = 'flex';
-    // 确保Logo在上方显示
-    const brandContainer = brandLoader.querySelector('.brand-container');
-    if (brandContainer) {
-      brandContainer.style.display = 'flex';
-      brandContainer.style.flexDirection = 'column';
-      brandContainer.style.alignItems = 'center';
-      brandContainer.style.justifyContent = 'center';
-    }
-  }
-}
-
-// 隐藏品牌启动页面并显示主内容
-function hideBrandLoader() {
-  const brandLoader = document.getElementById('brandLoader');
-  const mainContent = document.getElementById('mainContent');
-  
-  if (brandLoader) {
-    brandLoader.classList.add('fade-out');
-  }
-  
-  setTimeout(() => {
-    if (brandLoader) {
-      brandLoader.style.display = 'none';
-    }
-    
-    if (mainContent) {
-      mainContent.classList.add('loaded');
-    }
-    
-    // 初始化粒子系统
-    particlesSystem = new ParticlesSystem();
-    
-    // 初始化滚动动画
-    initScrollAnimations();
-    
-    // 初始化光标效果
-    initCursorEffect();
-    
-    console.log('主内容加载完成！');
-  }, 800);
-}
-
-// 初始化所有组件
-function initAllComponents() {
-  initTestimonials();
-  initFAQ();
-  initModal();
-  initFormSubmission();
-  initAutoPopup();
-  initSmoothScroll();
-  initAnimations();
-  
-  // 为所有CTA按钮添加事件监听
-  const ctaButtons = [
-    document.getElementById('heroBtn'),
-    document.getElementById('actionBtn'),
-    document.getElementById('conclusionBtn'),
-    document.getElementById('footerBtn'),
-    document.getElementById('floatingBtn')
-  ];
-  
-  ctaButtons.forEach(button => {
-    if (button) {
-      button.addEventListener('click', showModal);
-    }
-  });
-  
-  console.log('所有组件初始化完成！');
-}
-
-// 初始化顾客评价轮播
-function initTestimonials() {
-  const sliderTrack = document.getElementById('sliderTrack');
-  const sliderDots = document.getElementById('sliderDots');
-  const prevBtn = document.getElementById('prevBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  
-  if (!sliderTrack) {
-    console.error('未找到评价轮播容器');
-    return;
-  }
-  
-  // 生成评价卡片
-  testimonials.forEach((testimonial, index) => {
-    const card = document.createElement('div');
-    card.className = 'testimonial-card scroll-reveal';
-    card.innerHTML = `
-      <div class="testimonial-header">
-        <img src="${testimonial.avatar}" alt="${testimonial.name}" class="testimonial-avatar" loading="lazy">
-        <div class="testimonial-info">
-          <h4>${testimonial.name}</h4>
-          <p>${testimonial.age} | Bukit Indah分店</p>
-          <div class="stars">
-            ${'★'.repeat(testimonial.rating)}${'☆'.repeat(5 - testimonial.rating)}
-          </div>
-        </div>
-      </div>
-      <p class="testimonial-text">"${testimonial.text}"</p>
-      <p class="testimonial-date">${testimonial.date}</p>
-    `;
-    sliderTrack.appendChild(card);
-    
-    const dot = document.createElement('div');
-    dot.className = `dot ${index === 0 ? 'active' : ''}`;
-    dot.dataset.index = index;
-    dot.addEventListener('click', () => goToSlide(index));
-    sliderDots.appendChild(dot);
-  });
-  
-  if (prevBtn) prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-  if (nextBtn) nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
-  
-  startAutoSlide();
-  
-  sliderTrack.addEventListener('mouseenter', () => {
-    clearInterval(autoSlideInterval);
-  });
-  
-  sliderTrack.addEventListener('mouseleave', () => {
-    startAutoSlide();
-  });
-}
-
-// 切换到指定幻灯片
-function goToSlide(index) {
-  const slides = document.querySelectorAll('.testimonial-card');
-  const dots = document.querySelectorAll('.dot');
-  const totalSlides = slides.length;
-  
-  if (index >= totalSlides) index = 0;
-  if (index < 0) index = totalSlides - 1;
-  
-  currentSlide = index;
-  
-  const sliderTrack = document.getElementById('sliderTrack');
-  sliderTrack.style.transform = `translateX(-${index * 100}%)`;
-  
-  dots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === index);
-  });
-}
-
-// 开始自动轮播
-function startAutoSlide() {
-  clearInterval(autoSlideInterval);
-  autoSlideInterval = setInterval(() => {
-    goToSlide(currentSlide + 1);
-  }, 5000);
 }
 
 // 初始化FAQ展开/收起功能
@@ -875,17 +887,18 @@ function initAnimations() {
 // 页面可见性变化处理
 document.addEventListener('visibilitychange', function() {
   if (document.hidden) {
-    clearInterval(autoSlideInterval);
+    clearInterval(carouselAutoSlideInterval);
     clearTimeout(modalTimeout);
   } else {
-    startAutoSlide();
+    startCarouselAutoSlide();
     initAutoPopup();
   }
 });
 
 // 窗口大小变化时调整布局
 window.addEventListener('resize', function() {
-  goToSlide(currentSlide);
+  // 重新定位轮播器
+  goToCarouselSlide(currentCarouselSlide);
   
   // 移动端优化：重新调整字体大小
   if (window.innerWidth <= 768) {
@@ -940,7 +953,31 @@ window.addEventListener('load', function() {
   if (window.innerWidth <= 768) {
     adjustMobileFontSizes();
   }
+  
+  // 预加载图片
+  preloadImages();
 });
+
+// 预加载重要图片
+function preloadImages() {
+  const imagesToPreload = [
+    'hero-person.png',
+    'concern-1.jpg',
+    'concern-2.jpg',
+    'concern-3.jpg',
+    'concern-4.jpg',
+    'customer-1.jpg',
+    'customer-2.jpg',
+    'customer-3.jpg',
+    'customer-4.jpg',
+    'customer-5.jpg'
+  ];
+  
+  imagesToPreload.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+}
 
 // 添加控制台提示
 console.log('%c✨ Skin Lab 免费7天皮肤体验 ✨', 'color: #6C63FF; font-size: 18px; font-weight: bold;');

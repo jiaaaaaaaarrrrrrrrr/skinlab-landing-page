@@ -431,7 +431,7 @@
       </div>
     </section>
 
-    <!-- 真实顾客分享 Section -->
+    <!-- 真实顾客分享 Section - 优化版 -->
     <section class="testimonials">
       <div class="container">
         <div class="section-header">
@@ -439,21 +439,105 @@
           <p class="section-subtitle">听听他们体验后的真实感受</p>
         </div>
         
-        <div class="testimonial-slider">
-          <div class="slider-track" id="sliderTrack">
-            <!-- 评价卡片将通过JavaScript动态生成 -->
-          </div>
-          <div class="slider-controls">
-            <button class="slider-btn prev-btn btn-3d" id="prevBtn">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-            <div class="slider-dots" id="sliderDots">
-              <!-- 点将通过JavaScript生成 -->
+        <!-- 图片轮播器 - 优化版 -->
+        <div class="testimonial-carousel">
+          <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+              <!-- 顾客分享图片 - 优化显示 -->
+              <div class="carousel-slide">
+                <div class="slide-image-container">
+                  <img src="customer-1.jpg" alt="顾客真实体验分享 1" loading="lazy">
+                  <div class="image-overlay">
+                    <p>顾客说：<br>"终于明白我的皮肤问题出在哪里了"</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="carousel-slide">
+                <div class="slide-image-container">
+                  <img src="customer-2.jpg" alt="顾客真实体验分享 2" loading="lazy">
+                  <div class="image-overlay">
+                    <p>顾客说：<br>"7天体验让我省了很多冤枉钱"</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="carousel-slide">
+                <div class="slide-image-container">
+                  <img src="customer-3.jpg" alt="顾客真实体验分享 3" loading="lazy">
+                  <div class="image-overlay">
+                    <p>顾客说：<br>"专业分析，没有销售压力"</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="carousel-slide">
+                <div class="slide-image-container">
+                  <img src="customer-4.jpg" alt="顾客真实体验分享 4" loading="lazy">
+                  <div class="image-overlay">
+                    <p>顾客说：<br>"皮肤检测很科学，数据说话"</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="carousel-slide">
+                <div class="slide-image-container">
+                  <img src="customer-5.jpg" alt="顾客真实体验分享 5" loading="lazy">
+                  <div class="image-overlay">
+                    <p>顾客说：<br>"一次真正了解自己皮肤的机会"</p>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 复制第一组图片以实现无缝滚动 -->
+              <div class="carousel-slide">
+                <div class="slide-image-container">
+                  <img src="customer-1.jpg" alt="顾客真实体验分享 1" loading="lazy">
+                  <div class="image-overlay">
+                    <p>顾客说：<br>"终于明白我的皮肤问题出在哪里了"</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="carousel-slide">
+                <div class="slide-image-container">
+                  <img src="customer-2.jpg" alt="顾客真实体验分享 2" loading="lazy">
+                  <div class="image-overlay">
+                    <p>顾客说：<br>"7天体验让我省了很多冤枉钱"</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="carousel-slide">
+                <div class="slide-image-container">
+                  <img src="customer-3.jpg" alt="顾客真实体验分享 3" loading="lazy">
+                  <div class="image-overlay">
+                    <p>顾客说：<br>"专业分析，没有销售压力"</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <button class="slider-btn next-btn btn-3d" id="nextBtn">
-              <i class="fas fa-chevron-right"></i>
-            </button>
           </div>
+          
+          <!-- 轮播控制按钮 -->
+          <button class="carousel-btn prev-btn" id="carouselPrev">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="carousel-btn next-btn" id="carouselNext">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          
+          <!-- 轮播指示器 -->
+          <div class="carousel-indicators" id="carouselIndicators">
+            <!-- 指示器将通过JS动态生成 -->
+          </div>
+        </div>
+        
+        <!-- 体验描述 -->
+        <div class="testimonial-description">
+          <p>以上图片均为真实顾客体验分享，仅展示部分顾客的皮肤改善效果</p>
+          <p><i class="fas fa-check-circle"></i> 每位顾客都经历了专业的7天皮肤检测与护理体验</p>
+          <p><i class="fas fa-check-circle"></i> 效果因人而异，具体改善程度需根据个人皮肤状况而定</p>
         </div>
       </div>
     </section>
