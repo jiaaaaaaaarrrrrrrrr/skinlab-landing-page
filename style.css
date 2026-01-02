@@ -1720,11 +1720,11 @@ section {
   }
 }
 
-/* ===== 真实顾客分享轮播器 - 优化版 ===== */
+/* ===== 真实顾客分享轮播器 - 优化版（移除"顾客说"文字） ===== */
 .testimonial-carousel {
   position: relative;
   width: 100%;
-  max-width: 1400px; /* 增加最大宽度 */
+  max-width: 1400px;
   margin: 0 auto 50px;
   padding: 0 60px;
   overflow: hidden;
@@ -1751,19 +1751,19 @@ section {
     0 20px 50px rgba(108, 99, 255, 0.2),
     0 10px 30px rgba(0, 0, 0, 0.1);
   background: linear-gradient(135deg, #F8F9FF, #FFFFFF);
-  padding: 30px 0; /* 增加垂直内边距 */
+  padding: 30px 0;
 }
 
 .carousel-track {
   display: flex;
   transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: transform;
-  align-items: center; /* 垂直居中 */
-  min-height: 450px; /* 设置最小高度 */
+  align-items: center;
+  min-height: 450px;
 }
 
 .carousel-slide {
-  flex: 0 0 20%; /* 默认显示5张图片 */
+  flex: 0 0 20%; /* 电脑版本显示5张图片 */
   padding: 10px;
   box-sizing: border-box;
   display: flex;
@@ -1771,11 +1771,11 @@ section {
   justify-content: center;
 }
 
-/* 滑动容器 - 优化图片显示 */
+/* 滑动容器 */
 .slide-image-container {
   position: relative;
   width: 100%;
-  height: 380px; /* 固定高度 */
+  height: 380px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1795,46 +1795,81 @@ section {
     0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* 优化图片显示 - 确保完整显示 */
+/* 优化图片显示 */
 .slide-image-container img {
   width: auto;
   height: auto;
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* 确保图片完整显示 */
+  object-fit: contain;
   padding: 15px;
   transition: transform 1.2s ease;
   display: block;
-  margin: 0 auto; /* 水平居中 */
+  margin: 0 auto;
 }
 
 .slide-image-container:hover img {
   transform: scale(1.05);
 }
 
-/* 图片覆盖层 */
+/* 图片覆盖层 - 移除"顾客说"文字，只显示引述 */
 .image-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7));
   color: white;
-  padding: 20px;
+  padding: 18px 12px;
   transform: translateY(100%);
   transition: transform 0.3s ease;
   text-align: center;
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+
+/* 优化文字显示 - 只显示引述，更加简洁 */
+.image-overlay p {
+  margin: 0;
+  padding: 0;
+  display: block;
+  text-align: center;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 100%;
+  overflow: hidden;
+  word-break: keep-all; /* 保持单词完整 */
+  word-wrap: break-word; /* 允许长单词换行 */
+  hyphens: auto; /* 自动添加连字符 */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-style: italic; /* 引述使用斜体 */
+}
+
+/* 电脑版本优化 - 限制最多显示2行 */
+@media (min-width: 992px) {
+  .image-overlay p {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 限制最多2行 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .slide-image-container:hover .image-overlay {
   transform: translateY(0);
 }
 
-@media (max-width: 992px) {
+/* 响应式调整 */
+@media (max-width: 1200px) {
   .carousel-slide {
-    flex: 0 0 33.333%; /* 中等屏幕显示3张 */
+    flex: 0 0 33.333%;
   }
   
   .slide-image-container {
@@ -1842,9 +1877,19 @@ section {
   }
 }
 
+@media (max-width: 992px) {
+  .carousel-slide {
+    flex: 0 0 33.333%;
+  }
+  
+  .slide-image-container {
+    height: 320px;
+  }
+}
+
 @media (max-width: 768px) {
   .carousel-slide {
-    flex: 0 0 50%; /* 平板显示2张 */
+    flex: 0 0 50%;
   }
   
   .slide-image-container {
@@ -1854,11 +1899,21 @@ section {
   .carousel-track {
     min-height: 350px;
   }
+  
+  .image-overlay {
+    padding: 15px 10px;
+  }
+  
+  .image-overlay p {
+    font-size: 14px;
+    line-height: 1.4;
+    -webkit-line-clamp: 3; /* 移动端最多显示3行 */
+  }
 }
 
 @media (max-width: 576px) {
   .carousel-slide {
-    flex: 0 0 100%; /* 手机显示1张 */
+    flex: 0 0 100%;
   }
   
   .slide-image-container {
@@ -1870,8 +1925,15 @@ section {
   }
   
   .image-overlay {
-    font-size: 12px;
-    padding: 15px;
+    padding: 12px 8px;
+    font-size: 13px;
+    min-height: 60px;
+  }
+  
+  .image-overlay p {
+    font-size: 13px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2; /* 手机端最多显示2行 */
   }
 }
 
@@ -1939,11 +2001,19 @@ section {
   }
 }
 
+/* 轮播指示器 - 只在非电脑设备显示 */
 .carousel-indicators {
   display: flex;
   justify-content: center;
   gap: 10px;
   margin-top: 25px;
+}
+
+/* 电脑版本隐藏指示器 */
+@media (min-width: 992px) {
+  .carousel-indicators {
+    display: none;
+  }
 }
 
 .carousel-indicator {
