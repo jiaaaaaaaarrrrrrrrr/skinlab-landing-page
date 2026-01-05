@@ -361,9 +361,8 @@ class DataHandler {
       "提交时间": timestamp,
       "客户电话": formData.phone || '',
       "名额": "已预约",
-      "来源": "Skin Lab Website",
+      "来源": "Skin Lab landing page",
       "提交状态": "待确认",
-      "备注": "",
       "跟进状态": "未跟进"
     };
   }
@@ -985,4 +984,5 @@ console.log('%c地点: Bukit Indah, 柔佛新山', 'color: #36D1DC; font-size: 1
 console.log('%c日期: 10-01-2026 至 17-01-2026', 'color: #FF6584; font-size: 14px;');
 console.log('%c联系方式: +6016-9560425 | jiayee344@gmail.com', 'color: #4CAF50; font-size: 12px;');
 console.log('%cSheetDB API: ' + SHEETDB_API, 'color: #4CAF50; font-size: 12px;');
+
 console.log('%c移动端优化已启用', 'color: #FF9800; font-size: 12px;');
